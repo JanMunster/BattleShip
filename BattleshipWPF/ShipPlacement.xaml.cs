@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,12 +20,11 @@ namespace BattleshipWPF
     /// </summary>
     public partial class ShipPlacement : Window
     {
-        public PlayerModel humanx;
-        public int testInt;
+        public PlayerModel human;
 
         public ShipPlacement(PlayerModel hum)
         {
-            humanx = hum;
+            human = hum;
             InitializeComponent();
             DrawGrid();
             UpdateGrid();
@@ -37,7 +37,7 @@ namespace BattleshipWPF
 
             foreach (Button button in ShipGrid.Children)
             {
-                if (humanx.ShipSectionHere[x, y] == true)
+                if (human.ShipSectionHere[x, y] == true)
                 {
                     button.Content = "O";
                 }
@@ -54,7 +54,7 @@ namespace BattleshipWPF
             }
         }
 
-        private void DrawGrid()
+        private void DrawGrid()        
         {
             for (int i = 0; i < 10; i++)
             {
@@ -77,11 +77,32 @@ namespace BattleshipWPF
                     Button button = new Button();
                     button.VerticalAlignment = VerticalAlignment.Stretch;
                     button.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    Grid.SetColumn(button, x);
-                    Grid.SetRow(button, y);
+                    button.Tag = (x, y);
+                    button.FontSize = 32;
+                    button.AddHandler(Button.ClickEvent, new RoutedEventHandler(GridClick));
+                    Grid.SetColumn(button, y);
+                    Grid.SetRow(button, x);
                     ShipGrid.Children.Add(button);
                 }
             }
+        }
+
+        private void GridClick(object sender, RoutedEventArgs e)
+        {
+            (int, int) buttonPos = ((int, int))(sender as Button).Tag;
+            Trace.WriteLine($"Grid clicked: {buttonPos}");
+        }
+
+        private void ShipClick(object sender, RoutedEventArgs e)
+        {
+            string name = (sender as ToggleButton).Name;
+            string tag = (sender as ToggleButton).Tag.ToString();
+            string content = (sender as ToggleButton).Content.ToString();
+            Trace.WriteLine(name);
+            Trace.WriteLine(tag);
+            Trace.WriteLine(content);
+            Trace.WriteLine("click");
+
         }
     }
 }
