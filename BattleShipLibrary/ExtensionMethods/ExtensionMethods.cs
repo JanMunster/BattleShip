@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace BattleShipLibrary.ExtensionMethods
 {
     public static class ExtensionMethods
-    {
+    {        
         public static void PrintPlayer(this PlayerModel player)
         {
 
@@ -79,7 +79,7 @@ namespace BattleShipLibrary.ExtensionMethods
 
         public static void PrintShipSections(this PlayerModel player)
         {
-            Trace.WriteLine($"Ship grid for {player.Name} using ship.shipSectionStatus:");
+            Trace.WriteLine($"Ship grid for {player.Name} using ship.shipSectionHere:");
             for (int i = 0; i < 10; i++)
             {
                 for (int u = 0; u < 10; u++)

@@ -55,13 +55,19 @@ namespace BattleshipWPF
 
             gameInit.PopulatePlayers(playerName, AIon, humanStarts, human, computer); // Init players
 
-            human.PrintPlayer(); // Extensions methods that write debug info to console
+            human.PrintPlayer(); // Extension methods that write debug info to console
             human.PrintShotsFired();
             human.PrintShipSections();
 
             computer.PrintPlayer();
             computer.PrintShotsFired();
             computer.PrintShipSections();
+
+            ShipPlacement shipPlacement = new ShipPlacement(human);
+            //shipPlacement.humanx = human;
+            //shipPlacement.computerx = computer;
+            shipPlacement.Show();
+            this.Close();
         }
 
 
