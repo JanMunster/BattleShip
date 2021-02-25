@@ -1,0 +1,91 @@
+﻿<Window x:Class="BattleshipWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BattleshipWPF"
+        mc:Ignorable="d"
+        Title="BattleShip" Height="800" Width="800" FontSize="24">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="1" Grid.Row="0" FontSize="42" FontWeight="Bold" 
+                   HorizontalAlignment="Center"
+                   Margin="0 0 0 10">
+            <TextBlock.TextDecorations>
+                <TextDecoration/>
+            </TextBlock.TextDecorations><Run Text="Welcome to BattleShip!"/>
+        </TextBlock>
+
+        <Image Source="/Images/navyWelcome.jpg" Grid.Column="1" Grid.Row="1"
+               RenderOptions.BitmapScalingMode="Fant"
+               Stretch="Fill"
+               Width="600"
+               />
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left">
+            <TextBlock Margin="100 10 10 0">Player Name:</TextBlock>
+            <TextBox x:Name="PlayerName" MinWidth="150" MaxWidth="300" Padding="10 0 10 0"
+                     Text="Admiral Nelson" Margin="10 10 0 0"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left">
+            <TextBlock Margin="100 10 10 0">Opponent AI:</TextBlock>
+            <ToggleButton x:Name="ToggleAI" Margin="10 10 10 0" Padding="10 0 10 0"
+                          Click="ToggleAI_Click">
+                <ToggleButton.Style>
+                    <Style TargetType="{x:Type ToggleButton}">
+                        <Setter Property="Content" Value="OFF"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Content" Value="ON" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+        </StackPanel>
+
+        <TextBlock x:Name="AItext" Grid.Column="1" Grid.Row="4" Margin="100 0 10 0" FontSize="18"> 
+            (AI will randomize its shots)
+        </TextBlock>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left">
+            <TextBlock Margin="100 10 10 0">Starting Player:</TextBlock>
+            <ToggleButton x:Name="ToggleStartingPLayer" Margin="10 10 10 0" Padding="10 0 10 0">
+                <ToggleButton.Style>
+                    <Style TargetType="{x:Type ToggleButton}">
+                        <Setter Property="Content" Value="Computer PLayer"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Content" Value="Human Player" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+        </StackPanel>
+
+        <Button x:Name="StartButton" Grid.Column="1" Grid.Row="6" Margin="0 30 0 0" Padding="5" Width="200"
+                Click="StartButton_Click">
+            START
+        </Button>
+
+
+    </Grid>
+</Window>
