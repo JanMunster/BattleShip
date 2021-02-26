@@ -63,9 +63,7 @@ namespace BattleshipWPF
             computer.PrintShotsFired();
             computer.PrintShipSections();
 
-            ShipPlacement shipPlacement = new ShipPlacement(human);
-            //shipPlacement.humanx = human;
-            //shipPlacement.computerx = computer;
+            ShipPlacement shipPlacement = new ShipPlacement(human,computer);            
             shipPlacement.Show();
             this.Close();
         }

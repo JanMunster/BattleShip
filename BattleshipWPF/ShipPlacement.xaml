@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleshipWPF"
         mc:Ignorable="d"
-        Title="Ship Placement" Height="800" Width="1200">
+        Title="Ship Placement" Height="800" Width="1100">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -23,54 +23,70 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="PLACE YOUR BATTLESHIPS!" FontSize="48" 
-                   HorizontalAlignment="Center" Margin="10 10 10 10" >            
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="PLACE YOUR BATTLESHIPS!" FontSize="48" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 10 10 10" >            
         </TextBlock>
 
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="Select ship:" FontSize="32"
-                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50 10 0 10">
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Select ship:" FontSize="32"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 50 50 50">
         </TextBlock>
 
-        <ToggleButton Grid.Row="3" Grid.Column="2" Content="CARRIER" FontSize="24"
-                      Margin="50 0 00 0" Height="40" Width="150"
-                      IsChecked="True" Tag="0" 
+        <Button Grid.Row="3" Grid.Column="1" Content="CARRIER" FontSize="24"
+                      Margin="0 0 50 50" Height="40" Width="150"
+                      Tag="0" Background="#ffff90"  
                       Name="Carrier" Click="ShipClick">            
-        </ToggleButton>
+        </Button>
 
-        <ToggleButton Grid.Row="4" Grid.Column="2" Content="BATTLESHIP" FontSize="24"
-                      Margin="50 0 00 0" Height="40" Width="150"
-                      IsChecked="False" Tag="1"
+        <Button Grid.Row="4" Grid.Column="1" Content="BATTLESHIP" FontSize="24"
+                      Margin="0 0 50 50" Height="40" Width="150"
+                      Tag="1" 
                       Name="Battleship" Click="ShipClick">
-        </ToggleButton>
+        </Button>
         
-        <ToggleButton Grid.Row="5" Grid.Column="2" Content="CRUISER" FontSize="24"
-                      Margin="50 0 00 0" Height="40" Width="150"
-                      IsChecked="False" Tag="2"
+        <Button Grid.Row="5" Grid.Column="1" Content="CRUISER" FontSize="24"
+                      Margin="0 0 50 50" Height="40" Width="150"
+                      Tag="2"
                       Name="Cruiser" Click="ShipClick">
-        </ToggleButton>
+        </Button>
 
-        <ToggleButton Grid.Row="6" Grid.Column="2" Content="SUBMARINE" FontSize="24"
-                      Margin="50 0 00 0" Height="40" Width="150"
-                      IsChecked="False" Tag="3"
+        <Button Grid.Row="6" Grid.Column="1" Content="SUBMARINE" FontSize="24"
+                      Margin="0 0 50 50" Height="40" Width="150"
+                      Tag="3"
                       Name="Submarine" Click="ShipClick">
-        </ToggleButton>
+        </Button>
 
-        <ToggleButton Grid.Row="7" Grid.Column="2" Content="DESTROYER" FontSize="24"
-                      Margin="50 0 00 0" Height="40" Width="150"
-                      IsChecked="False" Tag="4"
+        <Button Grid.Row="7" Grid.Column="1" Content="DESTROYER" FontSize="24"
+                      Margin="0 0 50 50" Height="40" Width="150"
+                      Tag="4"
                       Name="Destroyer" Click="ShipClick">
-        </ToggleButton>
+        </Button>
 
+        <Button Grid.Row="1" Grid.Column="3" FontSize="24" Grid.RowSpan="2"
+                Margin="50 50 50 0" Height="80" Width="150" Click="FlipClick">
+            <TextBlock TextAlignment="Center"> Flip
+            <LineBreak/> Orientation
+            </TextBlock>
+        </Button>
 
-        <Grid Name="ShipGrid" Grid.Row="2" Grid.Column="1" Grid.RowSpan="6" ShowGridLines="True"
-              Width="600" Height="600">           
-            
-        </Grid>
-            
-        
+        <Button Grid.Row="3" Grid.Column="3" FontSize="24" Grid.RowSpan="2"
+                Margin="50 0 50 0" Height="80" Width="150" Click="RandomizeShipsClick">
+            <TextBlock TextAlignment="Center">Randomize
+            <LineBreak/> ships
+            </TextBlock>
+        </Button>
+
+        <Button Grid.Row="6" Grid.Column="3" FontSize="32" Grid.RowSpan="2" 
+                Margin="50 0 50 0" Height="80" Width="150" >
+            START!
+        </Button>
+
+        <Grid Name="ShipGrid" Grid.Row="2" Grid.Column="2" Grid.RowSpan="6" ShowGridLines="True"
+              Width="600" Height="600">         
+        </Grid>     
         
     </Grid>
 </Window>

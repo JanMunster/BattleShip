@@ -171,6 +171,7 @@ namespace BattleShipLibrary.GameInit
                         }
                     }
                 }
+
                 if (shipWithinGrid == false)
                 {
                     Trace.WriteLine($"{ship.ShipType} outside grid.");
