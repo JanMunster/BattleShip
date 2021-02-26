@@ -70,7 +70,7 @@
             <ToggleButton x:Name="ToggleStartingPLayer" Margin="10 10 10 0" Padding="10 0 10 0">
                 <ToggleButton.Style>
                     <Style TargetType="{x:Type ToggleButton}">
-                        <Setter Property="Content" Value="Computer PLayer"/>
+                        <Setter Property="Content" Value="Computer Player"/>
                         <Style.Triggers>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter Property="Content" Value="Human Player" />

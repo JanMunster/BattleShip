@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BattleShipLibrary.Models;
 using BattleShipLibrary.GameInit;
+using BattleShipLibrary.ExtensionMethods;
+
 
 namespace BattleshipWPF
 {
@@ -26,7 +28,6 @@ namespace BattleshipWPF
         private int shipSelected = 0;
         SolidColorBrush gray = new SolidColorBrush(Color.FromRgb(0xD3, 0xD3, 0xD3));
         private GameInit gameInit = new GameInit();
-
 
         public ShipPlacement(PlayerModel hum, PlayerModel com)
         {
@@ -83,23 +84,42 @@ namespace BattleshipWPF
         private void FlipClick(object sender, RoutedEventArgs e)
         {
             bool isNewPosOK = false;
+            bool overlap = true;
+            bool fitInGrid = false;
             Random rand = new Random();
             int x = 0;
             int y = 0;
-            List<(int, int)> newShip = new List<(int, int)>();
+            List<(int, int)> newShip;
 
+            human.Ships[shipSelected].IsVertical = !human.Ships[shipSelected].IsVertical;
             do
             {
+                newShip = new List<(int, int)>();
                 x = rand.Next(0, 10);
                 y = rand.Next(0, 10);
 
-                // Calculate new ship with inverted orientation
-                // remove old ship
-                // add new ship
+                //CalculateNewFlippedShip(x, y, newShip);
+                CalculateNewShip(newShip, (x, y));
+                fitInGrid = CheckFitInGrid((x, y));
+                if (fitInGrid == true)
+                {
+                    overlap = CheckOverlap(newShip);
+                }
 
+                isNewPosOK = (fitInGrid == true && overlap == false);
 
             } while (isNewPosOK == false);
 
+            moveShip(newShip, human.Ships[shipSelected].Placement);
+            UpdateGrid();
+        }       
+        private void StartClick(object sender, RoutedEventArgs e)
+        {
+            human.PrintPlayer();
+            computer.PrintPlayer();
+            GameWindow gameWindow = new GameWindow(human, computer);
+            gameWindow.Show();
+            this.Close();                    
         }
 
         private void DrawGrid()
@@ -230,14 +250,14 @@ namespace BattleshipWPF
                 }
             }
         }
-        private bool CheckFitInGrid((int, int) buttonPos)
+        private bool CheckFitInGrid((int, int) pos)
         {
             ShipModel ship = human.Ships[shipSelected];
             int shipSize = ship.ShipSize;
             bool shipWithinGrid = false;
             Trace.WriteLine(shipSize);
-            int x = buttonPos.Item1;
-            int y = buttonPos.Item2;
+            int x = pos.Item1;
+            int y = pos.Item2;
 
             if (ship.IsVertical == true) // If the ship is vertical...
             {
@@ -260,7 +280,6 @@ namespace BattleshipWPF
             }
             return shipWithinGrid;
         }
-
 
     }
 }
