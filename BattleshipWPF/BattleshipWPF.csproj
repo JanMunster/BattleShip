@@ -10,11 +10,12 @@
     <None Remove="Images\computerfiringtrim.mp4" />
     <None Remove="Images\humanfiringtrim.mp4" />
     <None Remove="Images\navyfootage.mp4" />
+    <None Remove="Images\navyfootage2.mp4" />
     <None Remove="Images\navyWelcome.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Images\navyfootage.mp4" />
+    <Resource Include="Images\navyfootage.mp4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +25,7 @@
   <ItemGroup>
     <Resource Include="Images\computerfiringtrim.mp4" />
     <Resource Include="Images\humanfiringtrim.mp4" />
+    <Resource Include="Images\navyfootage2.mp4" />
     <Resource Include="Images\navyWelcome.jpg" />
   </ItemGroup>
 

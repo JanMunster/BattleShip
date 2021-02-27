@@ -4,9 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleshipWPF"
-        xmlns:UI="clr-namespace:BattleshipWPF."
         mc:Ignorable="d"
-        Title="GameWindow" Height="800" Width="1000">
+        Title="GameWindow" Height="850" Width="1150">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -32,7 +31,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="3" FontSize="24" Grid.ColumnSpan="2" Margin="5">
+        <TextBlock Grid.Row="0" Grid.Column="3" FontSize="24" Grid.ColumnSpan="2" Margin="5" TextDecorations="Underline">
             Status of your fleet:
         </TextBlock>
 
@@ -76,7 +75,7 @@
             OO
         </TextBlock>
 
-        <TextBlock Grid.Row="4" Grid.Column="1" FontSize="32" FontWeight="Bold" TextAlignment="Center">
+        <TextBlock Grid.Row="4" Grid.Column="1" FontSize="32" FontWeight="Bold" TextAlignment="Center" Margin="0 10 0 0">
             YOUR TURN!
         </TextBlock>
         
@@ -84,36 +83,70 @@
             Click grid to fire
         </TextBlock>
 
+        <TextBlock Grid.Row="4" Grid.Column="6" FontSize="32" FontWeight="Bold" TextAlignment="Center" 
+                   Margin="0 10 0 0">
+            OPPONENT
+        </TextBlock>
+
+        <TextBlock Grid.Row="5" Grid.Column="6" FontSize="32" TextAlignment="Center" Margin="0 0 0 20"
+                   FontWeight="Bold">        
+            FIRES!
+        </TextBlock>
+
+       
+        
         <MediaElement Source="\Images\humanfiringtrim.mp4" Name="humanfiringvideo"
-                      Grid.Row="6" Grid.Column="1" LoadedBehavior="Manual" Visibility="Hidden"  SpeedRatio="1.5"
-               RenderOptions.BitmapScalingMode="Fant"
-               Stretch="Fill"
+                      Grid.Row="6" Grid.Column="1" LoadedBehavior="Manual"   SpeedRatio="1.5"
+               RenderOptions.BitmapScalingMode="Fant" Visibility="Hidden"
+               Stretch="Fill" MediaEnded="Humanfire_MediaEnded"
                Width="200"
                />
         <MediaElement Source="\Images\computerfiringtrim.mp4" Name="computerfiringvideo"
-                      Grid.Row="6" Grid.Column="6" LoadedBehavior="Manual" Visibility="Hidden" SpeedRatio="1.5"
-               RenderOptions.BitmapScalingMode="Fant"
+                      Grid.Row="6" Grid.Column="6" LoadedBehavior="Manual"  SpeedRatio="1.5"
+               RenderOptions.BitmapScalingMode="Fant" Visibility="Hidden"
                Stretch="Fill"
                Width="200"
                />
-        <MediaElement Source="\Images\navyfootage.mp4" Name="navyfootage"
-                      Grid.Row="6" Grid.Column="6"  LoadedBehavior="Manual" Visibility="Hidden" 
+        
+        <MediaElement Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\navyfootage.mp4" 
+                      Name="navyfootage2"
+                      Grid.Row="6" Grid.Column="6" LoadedBehavior="Manual"
                RenderOptions.BitmapScalingMode="Fant"
                Stretch="Fill"
-               Width="200"
+               Width="200" 
                />
-        <MediaElement Source="\Images\navyfootage2.mp4" Name="navyfootage2"
-                      Grid.Row="6" Grid.Column="1"  LoadedBehavior="Manual" Visibility="Hidden" Volume="0"
+        <MediaElement Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\navyfootage2.mp4" 
+                      Name="navyfootage"
+                      Grid.Row="6" Grid.Column="1" Volume="0" LoadedBehavior="Manual"
                RenderOptions.BitmapScalingMode="Fant" 
                Stretch="Fill"
                Width="200"
                />
 
-        <TextBlock Grid.Row="7" Grid.Column="1" FontSize="48" HorizontalAlignment="Center" 
-                   FontWeight="ExtraBold" Visibility="Hidden">
+        <TextBlock Grid.Row="8" Grid.Column="1" FontSize="48" HorizontalAlignment="Center" 
+                   FontWeight="ExtraBold" >
             FIRE!            
         </TextBlock>
 
+        <TextBlock Grid.Row="9" Grid.Column="1" FontSize="48" HorizontalAlignment="Center" 
+                   FontWeight="ExtraBold" Foreground="Red">
+            MISS!
+        </TextBlock>
+
+        <TextBlock Grid.Row="8" Grid.Column="6" FontSize="48" HorizontalAlignment="Center" 
+                   FontWeight="ExtraBold" >
+            FIRE!
+        </TextBlock>
+
+        <TextBlock Grid.Row="9" Grid.Column="6" FontSize="48" HorizontalAlignment="Center" 
+                   FontWeight="ExtraBold" Foreground="Red">
+            MISS!
+        </TextBlock>
+
+        <Grid Name="GameGrid" Grid.Row="4" Grid.Column="2" Grid.RowSpan="6" ShowGridLines="True"
+              Width="600" Height="600" Grid.ColumnSpan="4" Margin="20 20"
+              >
+        </Grid>
 
     </Grid>
 </Window>
