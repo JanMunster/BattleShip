@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -22,7 +24,11 @@ namespace BattleshipWPF
     {
         public PlayerModel Human { get; set; }
         public PlayerModel Computer { get; set; }
+        public TimeSpan FromBeginning { get; set; } = new TimeSpan(0, 0, 0);
+        public bool IsAHit { get; set; } = false;
+        public SolidColorBrush red = new SolidColorBrush(Color.FromRgb(250, 0, 0));
         public GameWindow(PlayerModel hum, PlayerModel com)
+
         {
             Human = hum;
             Computer = com;
@@ -72,18 +78,135 @@ namespace BattleshipWPF
 
         private void GameClick(object sender, RoutedEventArgs e)
         {
-            navyfootage.Pause();
+            (int, int) buttonPos = ((int, int))(sender as Button).Tag;
+            if (Human.ShotFired[buttonPos.Item1, buttonPos.Item2] == true)
+            {
+                return;
+            }
+
+            ShowHumanFireVideo();
+
+            FireShot.Visibility = Visibility.Visible;
+            Trace.WriteLine("Shot fired at: " + buttonPos);
+
+            CheckHitOrMiss(buttonPos, (sender as Button));
+
+
+        }
+
+        private void CheckHitOrMiss((int, int) pos, Button button)
+        {
+            int x = pos.Item1;
+            int y = pos.Item2;
+
+            foreach (ShipModel ship in Computer.Ships)
+            {
+                if (ship.Placement.Contains((x, y)))
+                {
+                    Trace.WriteLine("Hit: " + ship.ShipType + " " + (x, y));
+                    UpdateShipSectionStatus(x, y, ship);
+                    CheckShipAlive(ship);
+                    IsAHit = true;
+                    button.Content = "*";
+                    button.Foreground = red;
+                }
+                else
+                {
+                    Trace.WriteLine("Miss: " + (x, y));
+                    IsAHit = false;
+                    button.Content = "X";
+                }
+                Human.ShotFired[x, y] = true;
+            }
+
+
+
+
+
+        }
+
+        private void CheckShipAlive(ShipModel ship)
+        {
+            if (ship.ShipSectionStatus.Contains("O") == false)
+            {
+                ship.IsAlive = false;
+                Trace.WriteLine("Ship not alive");
+            }
+        }
+
+        private void UpdateShipSectionStatus(int x, int y, ShipModel ship)
+        {
+            for (int i = 0; i < ship.ShipSize; i++)
+            {
+                if (ship.Placement[i] == (x, y))
+                {
+                    Trace.WriteLine("ShipSections before: " + DisplaySections(ship.ShipSectionStatus));
+                    ship.ShipSectionStatus[i] = "X";
+                    Trace.WriteLine("ShipSections before: " + DisplaySections(ship.ShipSectionStatus));
+                }
+            }
+        }
+
+        private string DisplaySections(List<string> shipSectionStatus)
+        {
+            string sectionsAsSingleString = "";
+            foreach (string section in shipSectionStatus)
+            {
+                sectionsAsSingleString += section;
+            }
+            return sectionsAsSingleString;
+        }
+
+        private void Humanfire_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            humanfiringvideo.Stop();
+            humanfiringvideo.Visibility = Visibility.Hidden;
+            navyfootage.Visibility = Visibility.Visible;
+            Trace.Write("Before call to DisplayHitMiss  ");
+            DisplayHitMiss();
+            Trace.Write("After call to DisplayHitMiss  ");
+        }
+        private void computerfiringvideo_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            computerfiringvideo.Stop();
+            computerfiringvideo.Visibility = Visibility.Hidden;
+            navyfootage2.Visibility = Visibility.Visible;
+
+
+        }
+
+        private void DisplayHitMiss()
+        {
+            HitMiss.Visibility = Visibility.Visible;
+            if (IsAHit == true)
+            {
+                HitMiss.Text = "HIT!";
+            }
+            else
+            {
+                HitMiss.Text = "MISS!";
+            }
+            IsAHit = false;
+            Trace.WriteLine("Before delay");
+            Task.Delay(2000).ContinueWith(_ =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    HitMiss.Visibility = Visibility.Hidden;
+                    FireShot.Visibility = Visibility.Hidden;
+                });
+            });
+            Trace.WriteLine("After delay");
+
+        }
+
+        private void ShowHumanFireVideo()
+        {
             navyfootage.Visibility = Visibility.Hidden;
             humanfiringvideo.Visibility = Visibility.Visible;
             humanfiringvideo.Play();
             humanfiringvideo.MediaEnded += Humanfire_MediaEnded;
         }
 
-        private void Humanfire_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            humanfiringvideo.Visibility = Visibility.Collapsed;
-            navyfootage.Visibility = Visibility.Visible;
-            navyfootage.Play();
-        }
     }
 }

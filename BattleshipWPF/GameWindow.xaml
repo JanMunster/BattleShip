@@ -93,18 +93,20 @@
             FIRES!
         </TextBlock>
 
-       
-        
-        <MediaElement Source="\Images\humanfiringtrim.mp4" Name="humanfiringvideo"
+
+
+        <MediaElement Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\humanfiringtrim.mp4"
+                      Name="humanfiringvideo"
                       Grid.Row="6" Grid.Column="1" LoadedBehavior="Manual"   SpeedRatio="1.5"
                RenderOptions.BitmapScalingMode="Fant" Visibility="Hidden"
                Stretch="Fill" MediaEnded="Humanfire_MediaEnded"
                Width="200"
                />
-        <MediaElement Source="\Images\computerfiringtrim.mp4" Name="computerfiringvideo"
+        <MediaElement Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\computerfiringtrim.mp4"
+                      Name="computerfiringvideo"
                       Grid.Row="6" Grid.Column="6" LoadedBehavior="Manual"  SpeedRatio="1.5"
                RenderOptions.BitmapScalingMode="Fant" Visibility="Hidden"
-               Stretch="Fill"
+               Stretch="Fill" MediaEnded="computerfiringvideo_MediaEnded"
                Width="200"
                />
         
@@ -124,13 +126,13 @@
                />
 
         <TextBlock Grid.Row="8" Grid.Column="1" FontSize="48" HorizontalAlignment="Center" 
-                   FontWeight="ExtraBold" >
-            FIRE!            
+                   FontWeight="ExtraBold" Name="FireShot" Visibility="Hidden">
+            FIRE!
         </TextBlock>
 
         <TextBlock Grid.Row="9" Grid.Column="1" FontSize="48" HorizontalAlignment="Center" 
-                   FontWeight="ExtraBold" Foreground="Red">
-            MISS!
+                   FontWeight="ExtraBold" Foreground="Red" Name="HitMiss">
+            
         </TextBlock>
 
         <TextBlock Grid.Row="8" Grid.Column="6" FontSize="48" HorizontalAlignment="Center" 
