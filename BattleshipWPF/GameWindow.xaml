@@ -4,9 +4,116 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleshipWPF"
+        xmlns:UI="clr-namespace:BattleshipWPF."
         mc:Ignorable="d"
-        Title="GameWindow" Height="450" Width="800">
+        Title="GameWindow" Height="800" Width="1000">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="3" FontSize="24" Grid.ColumnSpan="2" Margin="5">
+            Status of your fleet:
+        </TextBlock>
+
+        <TextBlock Grid.Row="1" Grid.Column="2" FontSize="20" Margin="5 0 0 0" VerticalAlignment="Center">
+            CARRIER:
+        </TextBlock>
+
+        <TextBlock Grid.Row="1" Grid.Column="3" FontSize="24" Margin="10 0 0 0">
+            OOOOO
+        </TextBlock>
+
+        <TextBlock Grid.Row="1" Grid.Column="4" FontSize="20" Margin="30 0 0 0" VerticalAlignment="Center">
+            SUBMARINE:
+        </TextBlock>
+
+        <TextBlock Grid.Row="1" Grid.Column="5" FontSize="24" Margin="10 0 0 0">
+            OOOO
+        </TextBlock>
+
+        <TextBlock Grid.Row="2" Grid.Column="2" FontSize="20" Margin="5 0 0 0" VerticalAlignment="Center">
+            BATTLESHIP:
+        </TextBlock>
+
+        <TextBlock Grid.Row="2" Grid.Column="3" FontSize="24" Margin="10 0 0 0">
+            OOO
+        </TextBlock>
         
+        <TextBlock Grid.Row="2" Grid.Column="4" FontSize="20" Margin="30 0 0 0" VerticalAlignment="Center">
+            CRUISER:
+        </TextBlock>
+
+        <TextBlock Grid.Row="2" Grid.Column="5" FontSize="24" Margin="10 0 0 0">
+            OOO
+        </TextBlock>
+
+        <TextBlock Grid.Row="3" Grid.Column="2" FontSize="20" Margin="5 0 0 0" VerticalAlignment="Center">
+            DESTROYER:
+        </TextBlock>        
+
+        <TextBlock Grid.Row="3" Grid.Column="3" FontSize="24" Margin="10 0 0 0">
+            OO
+        </TextBlock>
+
+        <TextBlock Grid.Row="4" Grid.Column="1" FontSize="32" FontWeight="Bold" TextAlignment="Center">
+            YOUR TURN!
+        </TextBlock>
+        
+        <TextBlock Grid.Row="5" Grid.Column="1" FontSize="24" TextAlignment="Center" Margin="0 0 0 20">        
+            Click grid to fire
+        </TextBlock>
+
+        <MediaElement Source="\Images\humanfiringtrim.mp4" Name="humanfiringvideo"
+                      Grid.Row="6" Grid.Column="1" LoadedBehavior="Manual" Visibility="Hidden"  SpeedRatio="1.5"
+               RenderOptions.BitmapScalingMode="Fant"
+               Stretch="Fill"
+               Width="200"
+               />
+        <MediaElement Source="\Images\computerfiringtrim.mp4" Name="computerfiringvideo"
+                      Grid.Row="6" Grid.Column="6" LoadedBehavior="Manual" Visibility="Hidden" SpeedRatio="1.5"
+               RenderOptions.BitmapScalingMode="Fant"
+               Stretch="Fill"
+               Width="200"
+               />
+        <MediaElement Source="\Images\navyfootage.mp4" Name="navyfootage"
+                      Grid.Row="6" Grid.Column="6"  LoadedBehavior="Manual" Visibility="Hidden" 
+               RenderOptions.BitmapScalingMode="Fant"
+               Stretch="Fill"
+               Width="200"
+               />
+        <MediaElement Source="\Images\navyfootage2.mp4" Name="navyfootage2"
+                      Grid.Row="6" Grid.Column="1"  LoadedBehavior="Manual" Visibility="Hidden" Volume="0"
+               RenderOptions.BitmapScalingMode="Fant" 
+               Stretch="Fill"
+               Width="200"
+               />
+
+        <TextBlock Grid.Row="7" Grid.Column="1" FontSize="48" HorizontalAlignment="Center" 
+                   FontWeight="ExtraBold" Visibility="Hidden">
+            FIRE!            
+        </TextBlock>
+
+
     </Grid>
 </Window>
