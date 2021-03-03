@@ -28,11 +28,15 @@ namespace BattleshipWPF
         private int shipSelected = 0;
         SolidColorBrush gray = new SolidColorBrush(Color.FromRgb(0xD3, 0xD3, 0xD3));
         private GameInit gameInit = new GameInit();
+        public bool HumanStarts { get; set; }
+        public bool AIon { get; set; }
 
-        public ShipPlacement(PlayerModel hum, PlayerModel com)
+        public ShipPlacement(PlayerModel hum, PlayerModel com, bool humStarts, bool aIon)
         {
             human = hum;
             computer = com;
+            HumanStarts = humStarts;
+            AIon = aIon;
             InitializeComponent();
             DrawGrid();
             UpdateGrid();
@@ -117,7 +121,7 @@ namespace BattleshipWPF
         {
             human.PrintPlayer();
             computer.PrintPlayer();
-            GameWindow gameWindow = new GameWindow(human, computer);
+            GameWindow gameWindow = new GameWindow(human, computer,HumanStarts,AIon);
             gameWindow.Show();
             this.Close();                    
         }

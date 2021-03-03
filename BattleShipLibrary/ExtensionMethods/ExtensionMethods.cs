@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace BattleShipLibrary.ExtensionMethods
 {
     public static class ExtensionMethods
-    {        
+    {
         public static void PrintPlayer(this PlayerModel player)
         {
 
@@ -97,6 +97,19 @@ namespace BattleShipLibrary.ExtensionMethods
             }
         }
 
+        public static void PrintListOfShots(this List<(int, int)> listOfShots)
+        {
+            Trace.WriteLine("List of shots:");
+            for (int i = 0; i < 100; i++)
+            {
+                if (i % 10 == 0)
+                {
+                    Trace.WriteLine("");
+                }
+                Trace.Write(" " + listOfShots[i]);
+            }
+        }
     }
 }
+
 
