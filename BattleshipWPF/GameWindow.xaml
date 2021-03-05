@@ -39,7 +39,7 @@
             CARRIER:
         </TextBlock>
 
-        <TextBlock Grid.Row="1" Grid.Column="3" FontSize="24" Margin="10 0 0 0">
+        <TextBlock Grid.Row="1" Grid.Column="3" FontSize="24" Margin="10 0 0 0" Name="carrierStatus">
             OOOOO
         </TextBlock>
 
@@ -47,23 +47,23 @@
             SUBMARINE:
         </TextBlock>
 
-        <TextBlock Grid.Row="1" Grid.Column="5" FontSize="24" Margin="10 0 0 0">
-            OOOO
+        <TextBlock Grid.Row="1" Grid.Column="5" FontSize="24" Margin="10 0 0 0" Name="submarineStatus">
+            OOO
         </TextBlock>
 
         <TextBlock Grid.Row="2" Grid.Column="2" FontSize="20" Margin="5 0 0 0" VerticalAlignment="Center">
             BATTLESHIP:
         </TextBlock>
 
-        <TextBlock Grid.Row="2" Grid.Column="3" FontSize="24" Margin="10 0 0 0">
-            OOO
+        <TextBlock Grid.Row="2" Grid.Column="3" FontSize="24" Margin="10 0 0 0" Name="battleshipStatus">
+            OOOO
         </TextBlock>
         
         <TextBlock Grid.Row="2" Grid.Column="4" FontSize="20" Margin="30 0 0 0" VerticalAlignment="Center">
             CRUISER:
         </TextBlock>
 
-        <TextBlock Grid.Row="2" Grid.Column="5" FontSize="24" Margin="10 0 0 0">
+        <TextBlock Grid.Row="2" Grid.Column="5" FontSize="24" Margin="10 0 0 0" Name="cruiserStatus">
             OOO
         </TextBlock>
 
@@ -71,29 +71,29 @@
             DESTROYER:
         </TextBlock>        
 
-        <TextBlock Grid.Row="3" Grid.Column="3" FontSize="24" Margin="10 0 0 0">
+        <TextBlock Grid.Row="3" Grid.Column="3" FontSize="24" Margin="10 0 0 0" Name="destroyerStatus">
             OO
         </TextBlock>
 
-        <TextBlock Grid.Row="4" Grid.Column="1" FontSize="32" FontWeight="Bold" TextAlignment="Center" Margin="0 10 0 0">
+        <TextBlock Grid.Row="4" Grid.Column="1" FontSize="32" FontWeight="Bold" TextAlignment="Center" 
+                   Margin="0 10 0 0" Name="yourTurnText">
             YOUR TURN!
         </TextBlock>
         
-        <TextBlock Grid.Row="5" Grid.Column="1" FontSize="24" TextAlignment="Center" Margin="0 0 0 20">        
+        <TextBlock Grid.Row="5" Grid.Column="1" FontSize="24" TextAlignment="Center" 
+                   Margin="0 0 0 20" Name="clickGridToFireText">        
             Click grid to fire
         </TextBlock>
 
         <TextBlock Grid.Row="4" Grid.Column="6" FontSize="32" FontWeight="Bold" TextAlignment="Center" 
-                   Margin="0 10 0 0">
-            OPPONENT
+                   Margin="0 10 0 0" Name="computerOpponentText">
+            OPPONENTS
         </TextBlock>
 
         <TextBlock Grid.Row="5" Grid.Column="6" FontSize="32" TextAlignment="Center" Margin="0 0 0 20"
-                   FontWeight="Bold">        
-            FIRES!
+                   FontWeight="Bold" Name="computerTurnText">        
+            TURN!
         </TextBlock>
-
-
 
         <MediaElement Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\humanfiringtrim.mp4"
                       Name="humanfiringvideo"
@@ -106,7 +106,7 @@
                       Name="computerfiringvideo"
                       Grid.Row="6" Grid.Column="6" LoadedBehavior="Manual"  SpeedRatio="1.5"
                RenderOptions.BitmapScalingMode="Fant" Visibility="Hidden"
-               Stretch="Fill" MediaEnded="computerfiringvideo_MediaEnded"
+               Stretch="Fill" MediaEnded="Computerfiringvideo_MediaEnded"
                Width="200"
                />
         
@@ -136,12 +136,12 @@
         </TextBlock>
 
         <TextBlock Grid.Row="8" Grid.Column="6" FontSize="48" HorizontalAlignment="Center" 
-                   FontWeight="ExtraBold" >
+                   FontWeight="ExtraBold" Name="computerFireText" >
             FIRE!
         </TextBlock>
 
         <TextBlock Grid.Row="9" Grid.Column="6" FontSize="48" HorizontalAlignment="Center" 
-                   FontWeight="ExtraBold" Foreground="Red">
+                   FontWeight="ExtraBold" Foreground="Red" Name="computerHitMissText">
             MISS!
         </TextBlock>
 
