@@ -86,12 +86,12 @@
         </TextBlock>
 
         <TextBlock Grid.Row="4" Grid.Column="6" FontSize="32" FontWeight="Bold" TextAlignment="Center" 
-                   Margin="0 10 0 0" Name="computerOpponentText">
+                   Margin="0 10 0 0" Name="computerOpponentText" Visibility="Hidden">
             OPPONENTS
         </TextBlock>
 
         <TextBlock Grid.Row="5" Grid.Column="6" FontSize="32" TextAlignment="Center" Margin="0 0 0 20"
-                   FontWeight="Bold" Name="computerTurnText">        
+                   FontWeight="Bold" Name="computerTurnText" Visibility="Hidden">        
             TURN!
         </TextBlock>
 
@@ -113,14 +113,14 @@
         <MediaElement Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\navyfootage.mp4" 
                       Name="navyfootage2"
                       Grid.Row="6" Grid.Column="6" LoadedBehavior="Manual"
-               RenderOptions.BitmapScalingMode="Fant"
+               RenderOptions.BitmapScalingMode="Fant" MediaEnded="navyfootage2_MediaEnded"
                Stretch="Fill"
                Width="200" 
                />
         <MediaElement Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\navyfootage2.mp4" 
                       Name="navyfootage"
                       Grid.Row="6" Grid.Column="1" Volume="0" LoadedBehavior="Manual"
-               RenderOptions.BitmapScalingMode="Fant" 
+               RenderOptions.BitmapScalingMode="Fant" MediaEnded="navyfootage_MediaEnded"
                Stretch="Fill"
                Width="200"
                />
@@ -136,12 +136,13 @@
         </TextBlock>
 
         <TextBlock Grid.Row="8" Grid.Column="6" FontSize="48" HorizontalAlignment="Center" 
-                   FontWeight="ExtraBold" Name="computerFireText" >
+                   FontWeight="ExtraBold" Name="computerFireText" Visibility="Hidden">
             FIRE!
         </TextBlock>
 
         <TextBlock Grid.Row="9" Grid.Column="6" FontSize="48" HorizontalAlignment="Center" 
-                   FontWeight="ExtraBold" Foreground="Red" Name="computerHitMissText">
+                   FontWeight="ExtraBold" Foreground="Red" Name="computerHitMissText"
+                   Visibility="Hidden">
             MISS!
         </TextBlock>
 

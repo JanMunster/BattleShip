@@ -36,6 +36,8 @@ namespace BattleshipWPF
         public bool IsAIon { get; set; }
         public List<(int, int)> ListOfShots { get; set; }
         public (int, int) ComputerShot { get; set; }
+        public string RememberButtonContent { get; set; } = " ";
+        public SolidColorBrush RememberButtonColor { get; set; } = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         public GameWindow(PlayerModel hum, PlayerModel com, bool humanStarts, bool aIon)
         {
             Human = hum;
@@ -58,7 +60,6 @@ namespace BattleshipWPF
             navyfootage.Play();
             navyfootage2.Play();
         }
-
         private void DrawGrid()
         {
             for (int i = 0; i < 10; i++)
@@ -84,6 +85,7 @@ namespace BattleshipWPF
                     button.HorizontalAlignment = HorizontalAlignment.Stretch;
                     button.Tag = (x, y);
                     button.FontSize = 32;
+                    button.Content = " ";
                     button.AddHandler(Button.ClickEvent, new RoutedEventHandler(GameClick));
                     Grid.SetColumn(button, x);
                     Grid.SetRow(button, y);
@@ -91,7 +93,6 @@ namespace BattleshipWPF
                 }
             }
         }
-
         private void GameClick(object sender, RoutedEventArgs e)
         {
             GameGrid.IsHitTestVisible = false;
@@ -136,17 +137,6 @@ namespace BattleshipWPF
             }
             return sectionsAsSingleString;
         }
-        private void Humanfire_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            humanfiringvideo.MediaEnded -= Humanfire_MediaEnded;
-            humanfiringvideo.Stop();
-            humanfiringvideo.Visibility = Visibility.Hidden;
-            navyfootage.Visibility = Visibility.Visible;
-            CheckHumanHitOrMiss();
-            //Trace.Write("Before call to DisplayHumanHitMiss  ");
-            DisplayHumanHitMissText();
-            //Trace.Write("After call to DisplayHumanHitMiss  ");
-        }
         private void DisplayHumanHitMissText()
         {
             HitMiss.Visibility = Visibility.Visible;
@@ -161,7 +151,7 @@ namespace BattleshipWPF
 
             HumanHit = false;
             //Trace.WriteLine("Before delay");
-            Task.Delay(2000).ContinueWith(_ =>
+            Task.Delay(3000).ContinueWith(_ =>
             {
                 this.Dispatcher.Invoke(() =>
                 {
@@ -175,10 +165,11 @@ namespace BattleshipWPF
         private void DisplayComputerHitMissText()
         {
             computerHitMissText.Visibility = Visibility.Visible;
-            if(ComputerHit == true)
+            if (ComputerHit == true)
             {
-                computerHitMissText.Text= "HIT!";
+                computerHitMissText.Text = "HIT!";
                 updateHumanShipDisplay();
+
             }
             else
             {
@@ -186,7 +177,7 @@ namespace BattleshipWPF
             }
 
             ComputerHit = false;
-            Task.Delay(2000).ContinueWith(_ =>
+            Task.Delay(3000).ContinueWith(_ =>
             {
                 this.Dispatcher.Invoke(() =>
                 {
@@ -194,21 +185,24 @@ namespace BattleshipWPF
                     SwitchToHumanTurnTextUpdate();
                     GameGrid.IsHitTestVisible = true;
                     Trace.WriteLine("After computers turn delay");
-                    
+                    int x = ComputerShot.Item1;
+                    int y = ComputerShot.Item2 * 10;
+                    (GameGrid.Children[x + y] as Button).Content = RememberButtonContent;
+                    (GameGrid.Children[x + y] as Button).Foreground = RememberButtonColor;
+
+
                 });
             });
         }
-
         private void updateHumanShipDisplay()
         {
-            carrierStatus.Text = "OOpOO";
-            battleshipStatus.Text = "OpOO";
-            cruiserStatus.Text = "OpO";
-            submarineStatus.Text = "pOO";
-            destroyerStatus.Text = "pO";
+            carrierStatus.Text = DisplaySections(Human.Ships[0].ShipSectionStatus);            
+            battleshipStatus.Text = DisplaySections(Human.Ships[1].ShipSectionStatus);
+            cruiserStatus.Text = DisplaySections(Human.Ships[2].ShipSectionStatus);
+            submarineStatus.Text = DisplaySections(Human.Ships[3].ShipSectionStatus);
+            destroyerStatus.Text = DisplaySections(Human.Ships[4].ShipSectionStatus);
 
         }
-
         private void SwitchToHumanTurnTextUpdate()
         {
             computerHitMissText.Visibility = Visibility.Hidden;
@@ -218,14 +212,16 @@ namespace BattleshipWPF
 
             yourTurnText.Visibility = Visibility.Visible;
             clickGridToFireText.Visibility = Visibility.Visible;
-        }
 
+            (GameGrid.Children[ComputerShot.Item1 + ComputerShot.Item2 * 10] as Button).Content = RememberButtonContent;
+            (GameGrid.Children[ComputerShot.Item1 + ComputerShot.Item2 * 10] as Button).Foreground = RememberButtonColor;
+        }
         private void CheckComputerHitOrMiss()
         {
             int x = ComputerShot.Item1;
             int y = ComputerShot.Item2;
             ComputerHit = false;
-            Computer.ShotFired[x, y] = true;
+            Computer.ShotFired[x, y] = true;          
 
             foreach (ShipModel ship in Human.Ships)
             {
@@ -235,21 +231,27 @@ namespace BattleshipWPF
                     UpdateShipSectionStatus(x, y, ship);
                     CheckShipAlive(ship);
                     Trace.WriteLine("Computer Hit: " + ship.ShipType + " " + (x, y));
+                    (GameGrid.Children[x + y * 10] as Button).Content = "H";
+                    (GameGrid.Children[x + y * 10] as Button).Foreground = red;
                     break;
                 }
-                if (ComputerHit == false)
-                {
-                    Trace.WriteLine("Computer Miss: " + (x, y));
-                }
+            }
+
+            if (ComputerHit == false)
+            {
+                Trace.WriteLine("Computer Miss: " + (x, y));
+                (GameGrid.Children[x + y * 10] as Button).Content = "M";
+                (GameGrid.Children[x + y * 10] as Button).Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
             }
         }
         private void OpponentsTurn()
         {
             CheckForHumanWinner();
             Trace.WriteLine("Now opponents turn.");
-            OpponentTurnUpdateTexts();          
-                        ComputerShot = getNextShot();
-            Trace.WriteLine("Computer shot fired at: " + ComputerShot);
+            OpponentTurnUpdateTexts();
+            ComputerShot = getNextShot();
+            ListOfShots.PrintListOfShots();
+            Trace.WriteLine("\nComputer shot fired at: " + ComputerShot);
             ShowComputerFireVideo();
         }
         private void OpponentTurnUpdateTexts()
@@ -260,17 +262,19 @@ namespace BattleshipWPF
             yourTurnText.Visibility = Visibility.Hidden;
             clickGridToFireText.Visibility = Visibility.Hidden;
         }
-        private void ShowComputerFireVideo()
+        private void Humanfire_MediaEnded(object sender, RoutedEventArgs e)
         {
-            navyfootage2.Visibility = Visibility.Hidden;
-            computerfiringvideo.Visibility = Visibility.Visible;
-            computerfiringvideo.Play();
-            computerfiringvideo.MediaEnded += Computerfiringvideo_MediaEnded;
+            humanfiringvideo.Pause();
+            humanfiringvideo.Position = TimeSpan.FromMilliseconds(1);
+            humanfiringvideo.Visibility = Visibility.Hidden;
+            navyfootage.Visibility = Visibility.Visible;
+            CheckHumanHitOrMiss();
+            DisplayHumanHitMissText();
         }
         private void Computerfiringvideo_MediaEnded(object sender, RoutedEventArgs e)
         {
-            computerfiringvideo.MediaEnded -= Computerfiringvideo_MediaEnded;
-            computerfiringvideo.Stop();
+            computerfiringvideo.Pause();
+            computerfiringvideo.Position = TimeSpan.FromMilliseconds(1);
             computerfiringvideo.Visibility = Visibility.Hidden;
             navyfootage2.Visibility = Visibility.Visible;
             CheckComputerHitOrMiss();
@@ -300,7 +304,7 @@ namespace BattleshipWPF
 
             if (HumanHit == false)
             {
-                Trace.WriteLine("Miss: " + (x, y));
+                Trace.WriteLine("Human miss: " + (x, y));
                 ButtonClicked.Content = "X";
             }
         }
@@ -313,6 +317,14 @@ namespace BattleshipWPF
 
             (int, int) shot = ListOfShots[ListOfShots.Count - 1]; // Copy last coordinate in ListOfShots
             ListOfShots.RemoveAt(ListOfShots.Count - 1); // Remove last coordinate in ListOfShots
+
+            int x = shot.Item1;
+            int y = shot.Item2;
+            RememberButtonContent = (GameGrid.Children[x + (y * 10)] as Button).Content.ToString();
+            RememberButtonColor = ((SolidColorBrush)(GameGrid.Children[x + (y * 10)] as Button).Foreground);
+            Trace.WriteLine("string saved: '" + RememberButtonContent + "'");
+            Trace.WriteLine("Color saved: '" + RememberButtonColor.ToString() + "'");
+
             return shot; // Return the copied shot
         }
         private void GenerateListOfShots()
@@ -336,7 +348,12 @@ namespace BattleshipWPF
             navyfootage.Visibility = Visibility.Hidden;
             humanfiringvideo.Visibility = Visibility.Visible;
             humanfiringvideo.Play();
-            humanfiringvideo.MediaEnded += Humanfire_MediaEnded;
+        }
+        private void ShowComputerFireVideo()
+        {
+            navyfootage2.Visibility = Visibility.Hidden;
+            computerfiringvideo.Visibility = Visibility.Visible;
+            computerfiringvideo.Play();
         }
         private void CheckForHumanWinner()
         {
@@ -372,7 +389,15 @@ namespace BattleshipWPF
                 Trace.WriteLine("COMPUTER WON!");
             }
         }
-
-
+        private void navyfootage2_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            navyfootage2.Position = TimeSpan.FromMilliseconds(1);
+            navyfootage2.Play();
+        }
+        private void navyfootage_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            navyfootage.Position = TimeSpan.FromMilliseconds(1);
+            navyfootage.Play();
+        }
     }
 }

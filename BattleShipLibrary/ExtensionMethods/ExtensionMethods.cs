@@ -100,7 +100,7 @@ namespace BattleShipLibrary.ExtensionMethods
         public static void PrintListOfShots(this List<(int, int)> listOfShots)
         {
             Trace.WriteLine("List of shots:");
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < listOfShots.Count; i++)
             {
                 if (i % 10 == 0)
                 {
