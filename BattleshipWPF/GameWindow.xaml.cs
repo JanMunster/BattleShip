@@ -29,12 +29,15 @@ namespace BattleshipWPF
         public TimeSpan FromBeginning { get; set; } = new TimeSpan(0, 0, 0);
         public bool HumanHit { get; set; } = false;
         public bool ComputerHit { get; set; } = false;
+        public bool LastComputerShotWasHit { get; private set; }
+
         public SolidColorBrush red = new SolidColorBrush(Color.FromRgb(250, 0, 0));
         public (int, int) ButtonPos { get; set; }
         public Button ButtonClicked { get; set; }
         public bool HumansTurn { get; set; }
         public bool IsAIon { get; set; }
         public List<(int, int)> ListOfShots { get; set; }
+        public List<(int, int)> ListOfPriorityShots { get; set; } = new List<(int, int)>();
         public (int, int) ComputerShot { get; set; }
         public string RememberButtonContent { get; set; } = " ";
         public SolidColorBrush RememberButtonColor { get; set; } = new SolidColorBrush(Color.FromRgb(0, 0, 0));
@@ -85,7 +88,7 @@ namespace BattleshipWPF
                     button.HorizontalAlignment = HorizontalAlignment.Stretch;
                     button.Tag = (x, y);
                     button.FontSize = 32;
-                    button.Content = " ";
+                    button.Content = "";
                     button.AddHandler(Button.ClickEvent, new RoutedEventHandler(GameClick));
                     Grid.SetColumn(button, x);
                     Grid.SetRow(button, y);
@@ -169,7 +172,6 @@ namespace BattleshipWPF
             {
                 computerHitMissText.Text = "HIT!";
                 updateHumanShipDisplay();
-
             }
             else
             {
@@ -187,16 +189,14 @@ namespace BattleshipWPF
                     Trace.WriteLine("After computers turn delay");
                     int x = ComputerShot.Item1;
                     int y = ComputerShot.Item2 * 10;
-                    (GameGrid.Children[x + y] as Button).Content = RememberButtonContent;
+                    (GameGrid.Children[x + y] as Button).Content = RememberButtonContent+".";
                     (GameGrid.Children[x + y] as Button).Foreground = RememberButtonColor;
-
-
                 });
             });
         }
         private void updateHumanShipDisplay()
         {
-            carrierStatus.Text = DisplaySections(Human.Ships[0].ShipSectionStatus);            
+            carrierStatus.Text = DisplaySections(Human.Ships[0].ShipSectionStatus);
             battleshipStatus.Text = DisplaySections(Human.Ships[1].ShipSectionStatus);
             cruiserStatus.Text = DisplaySections(Human.Ships[2].ShipSectionStatus);
             submarineStatus.Text = DisplaySections(Human.Ships[3].ShipSectionStatus);
@@ -221,13 +221,15 @@ namespace BattleshipWPF
             int x = ComputerShot.Item1;
             int y = ComputerShot.Item2;
             ComputerHit = false;
-            Computer.ShotFired[x, y] = true;          
+            Computer.ShotFired[x, y] = true;
 
             foreach (ShipModel ship in Human.Ships)
             {
                 if (ship.Placement.Contains((x, y)))
                 {
                     ComputerHit = true;
+                    LastComputerShotWasHit = true;
+                    UpdatePriorityList(x, y);
                     UpdateShipSectionStatus(x, y, ship);
                     CheckShipAlive(ship);
                     Trace.WriteLine("Computer Hit: " + ship.ShipType + " " + (x, y));
@@ -244,6 +246,31 @@ namespace BattleshipWPF
                 (GameGrid.Children[x + y * 10] as Button).Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
             }
         }
+
+        private void UpdatePriorityList(int x, int y)
+        {
+            List<(int, int)> possibleShots = new List<(int, int)>();
+            possibleShots.Add((x - 1, y)); // Add position left of shot
+            possibleShots.Add((x, y - 1)); // Add position above shot
+            possibleShots.Add((x + 1, y)); // Add position right of shot
+            possibleShots.Add((x, y + 1)); // Add position below of shot           
+
+            foreach ((int,int) shot in possibleShots)
+            {
+                if(shot.Item1 > 9 || shot.Item1 < 0 || shot.Item2 > 9 || shot.Item2 < 0)
+                {                      
+                    continue; // Examine next shot, if shot is outside game grid
+                }
+
+                if(Computer.ShotFired[shot.Item1,shot.Item2] == true)
+                {
+                    continue; // Examine next shot, if computer fired here previously
+                }
+
+                ListOfPriorityShots.Add(shot);                
+            }
+        }
+
         private void OpponentsTurn()
         {
             CheckForHumanWinner();
@@ -292,7 +319,7 @@ namespace BattleshipWPF
                 if (ship.Placement.Contains((x, y)))
                 {
                     HumanHit = true;
-                    ButtonClicked.Content = "*";
+                    ButtonClicked.Content += "*";
                     ButtonClicked.Foreground = red;
                     ButtonClicked.FontSize = 42;
                     UpdateShipSectionStatus(x, y, ship);
@@ -305,27 +332,53 @@ namespace BattleshipWPF
             if (HumanHit == false)
             {
                 Trace.WriteLine("Human miss: " + (x, y));
-                ButtonClicked.Content = "X";
+                ButtonClicked.Content += "X";
             }
         }
         private (int, int) getNextShot()
         {
-            if (ListOfShots == null)
+            (int, int) shot = (0, 0);
+
+            if (ListOfShots == null) // If no list of shots generated, create one. 
             {
                 GenerateListOfShots();
             }
 
+            if (ListOfPriorityShots.Count == 0)
+            {
+                shot = GetShotFromList();
+            }
+            else
+            {
+                shot = GetShotFromPriorityList();
+            }
+
+            StoreButtonInfo(shot);
+
+            return shot; // Return the copied shot
+        }
+
+        private (int, int) GetShotFromPriorityList()
+        {
+            (int, int) shot = ListOfPriorityShots[ListOfPriorityShots.Count - 1]; // Copy last coordinate in ListOfPriotityShots
+            ListOfPriorityShots.RemoveAt(ListOfPriorityShots.Count - 1); // Remove last coordinate in ListOfPriorityShots
+            ListOfShots.Remove(shot); // Also remove from ListOfShots
+            return shot;
+        }
+        private (int, int) GetShotFromList()
+        {
             (int, int) shot = ListOfShots[ListOfShots.Count - 1]; // Copy last coordinate in ListOfShots
             ListOfShots.RemoveAt(ListOfShots.Count - 1); // Remove last coordinate in ListOfShots
-
+            return shot;
+        }
+        private void StoreButtonInfo((int, int) shot)
+        {
             int x = shot.Item1;
             int y = shot.Item2;
             RememberButtonContent = (GameGrid.Children[x + (y * 10)] as Button).Content.ToString();
             RememberButtonColor = ((SolidColorBrush)(GameGrid.Children[x + (y * 10)] as Button).Foreground);
             Trace.WriteLine("string saved: '" + RememberButtonContent + "'");
             Trace.WriteLine("Color saved: '" + RememberButtonColor.ToString() + "'");
-
-            return shot; // Return the copied shot
         }
         private void GenerateListOfShots()
         {
