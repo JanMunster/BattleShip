@@ -31,7 +31,17 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="3" FontSize="24" Grid.ColumnSpan="2" Margin="5" TextDecorations="Underline">
+        <Button Grid.Row="0" Grid.Column="6" Margin="30" Grid.RowSpan="4" Padding="5" 
+                MouseEnter="but_MouseEnter" MouseLeave="but_MouseLeave">
+            <TextBlock TextAlignment="Center" FontSize="20">
+                Hover here to<LineBreak/>display opponents<LineBreak/>shots fired
+            </TextBlock>
+            
+        </Button>
+
+        <TextBlock Grid.Row="0" Grid.Column="3" FontSize="24" Grid.ColumnSpan="2" 
+                   Margin="5" TextDecorations="Underline" Name="statusText">
+                    
             Status of your fleet:
         </TextBlock>
 

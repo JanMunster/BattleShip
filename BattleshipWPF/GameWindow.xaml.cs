@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BattleShipLibrary.Models;
 using BattleShipLibrary.ExtensionMethods;
-
+using System.Windows.Controls.Primitives;
 
 namespace BattleshipWPF
 {
@@ -24,12 +24,15 @@ namespace BattleshipWPF
     /// </summary>
     public partial class GameWindow : Window
     {
+        private const int TIMEDELAY = 1000;
         public PlayerModel Human { get; set; }
         public PlayerModel Computer { get; set; }
         public TimeSpan FromBeginning { get; set; } = new TimeSpan(0, 0, 0);
         public bool HumanHit { get; set; } = false;
         public bool ComputerHit { get; set; } = false;
         public bool LastComputerShotWasHit { get; private set; }
+        public Popup popup { get; set; } = new Popup();
+
 
         public SolidColorBrush red = new SolidColorBrush(Color.FromRgb(250, 0, 0));
         public (int, int) ButtonPos { get; set; }
@@ -154,7 +157,7 @@ namespace BattleshipWPF
 
             HumanHit = false;
             //Trace.WriteLine("Before delay");
-            Task.Delay(3000).ContinueWith(_ =>
+            Task.Delay(TIMEDELAY).ContinueWith(_ =>
             {
                 this.Dispatcher.Invoke(() =>
                 {
@@ -179,18 +182,19 @@ namespace BattleshipWPF
             }
 
             ComputerHit = false;
-            Task.Delay(3000).ContinueWith(_ =>
+            Task.Delay(TIMEDELAY).ContinueWith(_ =>
             {
                 this.Dispatcher.Invoke(() =>
                 {
+                    GameGrid.IsHitTestVisible = true;
                     CheckForComputerWinner();
                     SwitchToHumanTurnTextUpdate();
-                    GameGrid.IsHitTestVisible = true;
                     Trace.WriteLine("After computers turn delay");
                     int x = ComputerShot.Item1;
                     int y = ComputerShot.Item2 * 10;
-                    (GameGrid.Children[x + y] as Button).Content = RememberButtonContent+".";
+                    (GameGrid.Children[x + y] as Button).Content = RememberButtonContent + ".";
                     (GameGrid.Children[x + y] as Button).Foreground = RememberButtonColor;
+                    GameGrid.IsHitTestVisible = true;
                 });
             });
         }
@@ -215,6 +219,7 @@ namespace BattleshipWPF
 
             (GameGrid.Children[ComputerShot.Item1 + ComputerShot.Item2 * 10] as Button).Content = RememberButtonContent;
             (GameGrid.Children[ComputerShot.Item1 + ComputerShot.Item2 * 10] as Button).Foreground = RememberButtonColor;
+            GameGrid.IsHitTestVisible = true;
         }
         private void CheckComputerHitOrMiss()
         {
@@ -255,23 +260,23 @@ namespace BattleshipWPF
             possibleShots.Add((x + 1, y)); // Add position right of shot
             possibleShots.Add((x, y + 1)); // Add position below of shot           
 
-            foreach ((int,int) shot in possibleShots)
+            foreach ((int, int) shot in possibleShots)
             {
-                if(shot.Item1 > 9 || shot.Item1 < 0 || shot.Item2 > 9 || shot.Item2 < 0)
-                {                      
+                if (shot.Item1 > 9 || shot.Item1 < 0 || shot.Item2 > 9 || shot.Item2 < 0)
+                {
                     continue; // Examine next shot, if shot is outside game grid
                 }
 
-                if(Computer.ShotFired[shot.Item1,shot.Item2] == true)
+                if (Computer.ShotFired[shot.Item1, shot.Item2] == true)
                 {
                     continue; // Examine next shot, if computer fired here previously
                 }
 
-                ListOfPriorityShots.Add(shot);                
+                ListOfPriorityShots.Add(shot);
             }
         }
 
-        private void OpponentsTurn()
+     private void OpponentsTurn()
         {
             CheckForHumanWinner();
             Trace.WriteLine("Now opponents turn.");
@@ -423,6 +428,7 @@ namespace BattleshipWPF
             if (humanWon == true)
             {
                 Trace.WriteLine("HUMAN WON!");
+                ShowEndScreen(Human.ShotFired, 1); // 1 denotes human winner
             }
         }
         private void CheckForComputerWinner()
@@ -440,8 +446,45 @@ namespace BattleshipWPF
             if (computerWon == true)
             {
                 Trace.WriteLine("COMPUTER WON!");
+                ShowEndScreen(Computer.ShotFired, 0); // 0 denotes computer winner
             }
         }
+
+        private void ShowEndScreen(bool[,] shotFired, int winner)
+        {
+            int totalShots = 0;
+            foreach (bool shot in shotFired) // Count all shots fired by player
+            {
+                if (shot == true)
+                {
+                    totalShots++;
+                }
+            }
+
+            EndScreen endScreen = new EndScreen();
+            endScreen.ShotsToFinish = totalShots;
+            endScreen.Show();
+
+            if (winner == 1)
+            {
+                endScreen.LostImage.Visibility = Visibility.Hidden;
+                endScreen.wonImage.Visibility = Visibility.Visible;
+                endScreen.wonOrLostText.Text = "YOU WON!";
+                endScreen.numberOfShotsText.Text = "You took " + totalShots +
+                    " to destroy the opponent.";
+            }
+            else
+            {
+                endScreen.LostImage.Visibility = Visibility.Visible;
+                endScreen.wonImage.Visibility = Visibility.Hidden;
+                endScreen.wonOrLostText.Text = "YOU LOST!";
+                endScreen.numberOfShotsText.Text = "The opponent took " + totalShots +
+                    " to sink your ships.";
+            }
+
+            this.Close();
+        }
+
         private void navyfootage2_MediaEnded(object sender, RoutedEventArgs e)
         {
             navyfootage2.Position = TimeSpan.FromMilliseconds(1);
@@ -451,6 +494,61 @@ namespace BattleshipWPF
         {
             navyfootage.Position = TimeSpan.FromMilliseconds(1);
             navyfootage.Play();
+        }
+
+        private void but_MouseEnter(object sender, MouseEventArgs e)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = "En popup!";
+            textBlock.Background = Brushes.LightBlue;
+            textBlock.Foreground = Brushes.Blue;
+            textBlock.Height = 200;
+            textBlock.Width = 300;
+
+            popup.Child = textBlock;
+            popup.PlacementTarget = statusText;
+            popup.IsOpen = true;
+
+            DrawGridInPopUp();
+        }
+
+        private void DrawGridInPopUp()
+        {
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    ColumnDefinition gridCol = new ColumnDefinition();
+            //    gridCol.Name = "Column" + i.ToString();
+            //    //popup.ColumnDefinitions.Add(gridCol);
+            //}
+
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    RowDefinition gridRow = new RowDefinition();
+            //    gridRow.Name = "Row" + i.ToString();
+            //    GameGrid.RowDefinitions.Add(gridRow);
+            //}
+
+            //for (int y = 0; y < 10; y++)
+            //{
+            //    for (int x = 0; x < 10; x++)
+            //    {
+            //        Button button = new Button();
+            //        button.VerticalAlignment = VerticalAlignment.Stretch;
+            //        button.HorizontalAlignment = HorizontalAlignment.Stretch;
+            //        button.Tag = (x, y);
+            //        button.FontSize = 32;
+            //        button.Content = "";
+            //        button.AddHandler(Button.ClickEvent, new RoutedEventHandler(GameClick));
+            //        Grid.SetColumn(button, x);
+            //        Grid.SetRow(button, y);
+            //        GameGrid.Children.Add(button);
+            //    }
+            //}
+        }
+
+        private void but_MouseLeave(object sender, MouseEventArgs e)
+        {
+            popup.IsOpen = false;
         }
     }
 }
