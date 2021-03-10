@@ -31,8 +31,8 @@ namespace BattleshipWPF
         public bool HumanHit { get; set; } = false;
         public bool ComputerHit { get; set; } = false;
         public bool LastComputerShotWasHit { get; private set; }
-        public Popup popup { get; set; } = new Popup();
 
+        public PopUp popUp = new PopUp();
 
         public SolidColorBrush red = new SolidColorBrush(Color.FromRgb(250, 0, 0));
         public (int, int) ButtonPos { get; set; }
@@ -66,6 +66,7 @@ namespace BattleshipWPF
             navyfootage.Play();
             navyfootage2.Play();
         }
+
         private void DrawGrid()
         {
             for (int i = 0; i < 10; i++)
@@ -99,6 +100,7 @@ namespace BattleshipWPF
                 }
             }
         }
+
         private void GameClick(object sender, RoutedEventArgs e)
         {
             GameGrid.IsHitTestVisible = false;
@@ -114,6 +116,7 @@ namespace BattleshipWPF
 
             Trace.WriteLine("Human Shot fired at: " + ButtonPos);
         }
+
         private void CheckShipAlive(ShipModel ship)
         {
             if (ship.ShipSectionStatus.Contains("O") == false)
@@ -122,6 +125,7 @@ namespace BattleshipWPF
                 Trace.WriteLine("Ship not alive");
             }
         }
+
         private void UpdateShipSectionStatus(int x, int y, ShipModel ship)
         {
             for (int i = 0; i < ship.ShipSize; i++)
@@ -134,6 +138,7 @@ namespace BattleshipWPF
                 }
             }
         }
+
         private string DisplaySections(List<string> shipSectionStatus)
         {
             string sectionsAsSingleString = "";
@@ -143,6 +148,7 @@ namespace BattleshipWPF
             }
             return sectionsAsSingleString;
         }
+
         private void DisplayHumanHitMissText()
         {
             HitMiss.Visibility = Visibility.Visible;
@@ -168,6 +174,7 @@ namespace BattleshipWPF
                 });
             });
         }
+
         private void DisplayComputerHitMissText()
         {
             computerHitMissText.Visibility = Visibility.Visible;
@@ -192,12 +199,13 @@ namespace BattleshipWPF
                     Trace.WriteLine("After computers turn delay");
                     int x = ComputerShot.Item1;
                     int y = ComputerShot.Item2 * 10;
-                    (GameGrid.Children[x + y] as Button).Content = RememberButtonContent + ".";
+                    (GameGrid.Children[x + y] as Button).Content = RememberButtonContent;
                     (GameGrid.Children[x + y] as Button).Foreground = RememberButtonColor;
                     GameGrid.IsHitTestVisible = true;
                 });
             });
         }
+
         private void updateHumanShipDisplay()
         {
             carrierStatus.Text = DisplaySections(Human.Ships[0].ShipSectionStatus);
@@ -207,6 +215,7 @@ namespace BattleshipWPF
             destroyerStatus.Text = DisplaySections(Human.Ships[4].ShipSectionStatus);
 
         }
+
         private void SwitchToHumanTurnTextUpdate()
         {
             computerHitMissText.Visibility = Visibility.Hidden;
@@ -221,6 +230,7 @@ namespace BattleshipWPF
             (GameGrid.Children[ComputerShot.Item1 + ComputerShot.Item2 * 10] as Button).Foreground = RememberButtonColor;
             GameGrid.IsHitTestVisible = true;
         }
+
         private void CheckComputerHitOrMiss()
         {
             int x = ComputerShot.Item1;
@@ -252,6 +262,8 @@ namespace BattleshipWPF
             }
         }
 
+
+       
         private void UpdatePriorityList(int x, int y)
         {
             List<(int, int)> possibleShots = new List<(int, int)>();
@@ -272,11 +284,17 @@ namespace BattleshipWPF
                     continue; // Examine next shot, if computer fired here previously
                 }
 
+                if (ListOfPriorityShots.Contains(shot))
+                {
+                    continue; // If shot is already in ListOfPriorityShots, continue without adding
+                }
+
                 ListOfPriorityShots.Add(shot);
             }
         }
 
-     private void OpponentsTurn()
+
+        private void OpponentsTurn()
         {
             CheckForHumanWinner();
             Trace.WriteLine("Now opponents turn.");
@@ -286,6 +304,7 @@ namespace BattleshipWPF
             Trace.WriteLine("\nComputer shot fired at: " + ComputerShot);
             ShowComputerFireVideo();
         }
+
         private void OpponentTurnUpdateTexts()
         {
             computerTurnText.Visibility = Visibility.Visible;
@@ -293,7 +312,8 @@ namespace BattleshipWPF
             computerFireText.Visibility = Visibility.Visible;
             yourTurnText.Visibility = Visibility.Hidden;
             clickGridToFireText.Visibility = Visibility.Hidden;
-        }
+        }        
+
         private void Humanfire_MediaEnded(object sender, RoutedEventArgs e)
         {
             humanfiringvideo.Pause();
@@ -303,6 +323,7 @@ namespace BattleshipWPF
             CheckHumanHitOrMiss();
             DisplayHumanHitMissText();
         }
+
         private void Computerfiringvideo_MediaEnded(object sender, RoutedEventArgs e)
         {
             computerfiringvideo.Pause();
@@ -312,6 +333,7 @@ namespace BattleshipWPF
             CheckComputerHitOrMiss();
             DisplayComputerHitMissText();
         }
+
         private void CheckHumanHitOrMiss()
         {
             int x = ButtonPos.Item1;
@@ -340,6 +362,7 @@ namespace BattleshipWPF
                 ButtonClicked.Content += "X";
             }
         }
+
         private (int, int) getNextShot()
         {
             (int, int) shot = (0, 0);
@@ -370,12 +393,14 @@ namespace BattleshipWPF
             ListOfShots.Remove(shot); // Also remove from ListOfShots
             return shot;
         }
+
         private (int, int) GetShotFromList()
         {
             (int, int) shot = ListOfShots[ListOfShots.Count - 1]; // Copy last coordinate in ListOfShots
             ListOfShots.RemoveAt(ListOfShots.Count - 1); // Remove last coordinate in ListOfShots
             return shot;
         }
+
         private void StoreButtonInfo((int, int) shot)
         {
             int x = shot.Item1;
@@ -385,6 +410,7 @@ namespace BattleshipWPF
             Trace.WriteLine("string saved: '" + RememberButtonContent + "'");
             Trace.WriteLine("Color saved: '" + RememberButtonColor.ToString() + "'");
         }
+
         private void GenerateListOfShots()
         {
             ListOfShots = new List<(int, int)>();
@@ -401,18 +427,21 @@ namespace BattleshipWPF
             ListOfShots = ListOfShots.OrderBy(x => Guid.NewGuid()).ToList();
             ListOfShots.PrintListOfShots();
         }
+
         private void ShowHumanFireVideo()
         {
             navyfootage.Visibility = Visibility.Hidden;
             humanfiringvideo.Visibility = Visibility.Visible;
             humanfiringvideo.Play();
         }
+
         private void ShowComputerFireVideo()
         {
             navyfootage2.Visibility = Visibility.Hidden;
             computerfiringvideo.Visibility = Visibility.Visible;
             computerfiringvideo.Play();
         }
+
         private void CheckForHumanWinner()
         {
             bool humanWon = true;
@@ -431,6 +460,7 @@ namespace BattleshipWPF
                 ShowEndScreen(Human.ShotFired, 1); // 1 denotes human winner
             }
         }
+
         private void CheckForComputerWinner()
         {
             bool computerWon = true;
@@ -470,8 +500,8 @@ namespace BattleshipWPF
                 endScreen.LostImage.Visibility = Visibility.Hidden;
                 endScreen.wonImage.Visibility = Visibility.Visible;
                 endScreen.wonOrLostText.Text = "YOU WON!";
-                endScreen.numberOfShotsText.Text = "You took " + totalShots +
-                    " to destroy the opponent.";
+                endScreen.numberOfShotsText.Text = "You used " + totalShots +
+                    " shots to destroy the opponent.";
             }
             else
             {
@@ -479,7 +509,7 @@ namespace BattleshipWPF
                 endScreen.wonImage.Visibility = Visibility.Hidden;
                 endScreen.wonOrLostText.Text = "YOU LOST!";
                 endScreen.numberOfShotsText.Text = "The opponent took " + totalShots +
-                    " to sink your ships.";
+                    " shots to sink your ships.";
             }
 
             this.Close();
@@ -490,6 +520,7 @@ namespace BattleshipWPF
             navyfootage2.Position = TimeSpan.FromMilliseconds(1);
             navyfootage2.Play();
         }
+
         private void navyfootage_MediaEnded(object sender, RoutedEventArgs e)
         {
             navyfootage.Position = TimeSpan.FromMilliseconds(1);
@@ -498,57 +529,26 @@ namespace BattleshipWPF
 
         private void but_MouseEnter(object sender, MouseEventArgs e)
         {
-            TextBlock textBlock = new TextBlock();
-            textBlock.Text = "En popup!";
-            textBlock.Background = Brushes.LightBlue;
-            textBlock.Foreground = Brushes.Blue;
-            textBlock.Height = 200;
-            textBlock.Width = 300;
+            popUp.ComputerShots = Computer.ShotFired;
+            popUp.HumanShips = Human.ShipSectionHere;
 
-            popup.Child = textBlock;
-            popup.PlacementTarget = statusText;
-            popup.IsOpen = true;
-
-            DrawGridInPopUp();
-        }
-
-        private void DrawGridInPopUp()
-        {
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    ColumnDefinition gridCol = new ColumnDefinition();
-            //    gridCol.Name = "Column" + i.ToString();
-            //    //popup.ColumnDefinitions.Add(gridCol);
-            //}
-
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    RowDefinition gridRow = new RowDefinition();
-            //    gridRow.Name = "Row" + i.ToString();
-            //    GameGrid.RowDefinitions.Add(gridRow);
-            //}
-
-            //for (int y = 0; y < 10; y++)
-            //{
-            //    for (int x = 0; x < 10; x++)
-            //    {
-            //        Button button = new Button();
-            //        button.VerticalAlignment = VerticalAlignment.Stretch;
-            //        button.HorizontalAlignment = HorizontalAlignment.Stretch;
-            //        button.Tag = (x, y);
-            //        button.FontSize = 32;
-            //        button.Content = "";
-            //        button.AddHandler(Button.ClickEvent, new RoutedEventHandler(GameClick));
-            //        Grid.SetColumn(button, x);
-            //        Grid.SetRow(button, y);
-            //        GameGrid.Children.Add(button);
-            //    }
-            //}
-        }
+            if (popUp.IsVisible == false)
+            {
+                popUp.Show();
+            } else
+            {
+                popUp.Visibility = Visibility.Visible;
+            }            
+        }        
 
         private void but_MouseLeave(object sender, MouseEventArgs e)
         {
-            popup.IsOpen = false;
+            popUp.Visibility = Visibility.Hidden;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            popUp.Close();
         }
     }
 }
