@@ -17,12 +17,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\loserImage.jfif" />
     <Resource Include="Images\navyfootage.mp4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BattleShipLibrary\BattleShipLibrary.csproj" />
+    <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +36,12 @@
     <Resource Include="Images\navyfootage2.mp4" />
     <Resource Include="Images\navyWelcome.jpg" />
     <Resource Include="Images\winnerImage.jfif" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

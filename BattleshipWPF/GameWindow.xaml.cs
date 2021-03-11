@@ -16,6 +16,10 @@ using System.Windows.Shapes;
 using BattleShipLibrary.Models;
 using BattleShipLibrary.ExtensionMethods;
 using System.Windows.Controls.Primitives;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using DataAccessLibrary;
+using DataAccessLibrary.Models;
 
 namespace BattleshipWPF
 {
@@ -54,10 +58,45 @@ namespace BattleshipWPF
             DrawGrid();
             StartVideos();
 
+            SqlCRUD sql = new SqlCRUD(GetConnectionString());
+            ReadFromDatabase(sql);
+
+
+
             if (HumansTurn == false)
             {
                 GameGrid.IsHitTestVisible = false;
                 OpponentsTurn();
+            }
+        }
+
+        private void ReadFromDatabase(SqlCRUD sql)
+        {
+            var rows = sql.GetAllData();
+
+            foreach (var row in rows)
+            {
+                Trace.WriteLine(row.Carrier1);
+                Trace.WriteLine(row.Carrier2);
+                Trace.WriteLine(row.Carrier3);
+                Trace.WriteLine(row.Carrier4);
+                Trace.WriteLine(row.Carrier5);
+
+                Trace.WriteLine(row.Battleship1);
+                Trace.WriteLine(row.Battleship2);
+                Trace.WriteLine(row.Battleship3);
+                Trace.WriteLine(row.Battleship4);
+
+                Trace.WriteLine(row.Cruiser1);
+                Trace.WriteLine(row.Cruiser2);
+                Trace.WriteLine(row.Cruiser3);
+
+                Trace.WriteLine(row.Submarine1);
+                Trace.WriteLine(row.Submarine2);
+                Trace.WriteLine(row.Submarine3);
+
+                Trace.WriteLine(row.Destroyer1);
+                Trace.WriteLine(row.Destroyer2);
             }
         }
 
@@ -262,8 +301,6 @@ namespace BattleshipWPF
             }
         }
 
-
-       
         private void UpdatePriorityList(int x, int y)
         {
             List<(int, int)> possibleShots = new List<(int, int)>();
@@ -293,7 +330,6 @@ namespace BattleshipWPF
             }
         }
 
-
         private void OpponentsTurn()
         {
             CheckForHumanWinner();
@@ -312,7 +348,7 @@ namespace BattleshipWPF
             computerFireText.Visibility = Visibility.Visible;
             yourTurnText.Visibility = Visibility.Hidden;
             clickGridToFireText.Visibility = Visibility.Hidden;
-        }        
+        }
 
         private void Humanfire_MediaEnded(object sender, RoutedEventArgs e)
         {
@@ -535,11 +571,12 @@ namespace BattleshipWPF
             if (popUp.IsVisible == false)
             {
                 popUp.Show();
-            } else
+            }
+            else
             {
                 popUp.Visibility = Visibility.Visible;
-            }            
-        }        
+            }
+        }
 
         private void but_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -550,5 +587,11 @@ namespace BattleshipWPF
         {
             popUp.Close();
         }
+
+        private static string GetConnectionString(string connectionStringName = "Default")
+        {
+            return "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SQLshotsDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        }
+
     }
 }
