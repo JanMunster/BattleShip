@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using BattleShipLibrary.Models;
 using BattleShipLibrary.GameInit;
 using BattleShipLibrary.ExtensionMethods;
+using DataAccessLibrary;
+using DataAccessLibrary.Models;
 
 
 namespace BattleshipWPF
@@ -119,12 +121,75 @@ namespace BattleshipWPF
         }       
         private void StartClick(object sender, RoutedEventArgs e)
         {
+            StoreShipsInDatabase();
             human.PrintPlayer();
             computer.PrintPlayer();
             GameWindow gameWindow = new GameWindow(human, computer,HumanStarts,AIon);
             gameWindow.Show();
             this.Close();                    
         }
+
+        private void StoreShipsInDatabase()
+        {
+            SqlCRUD sqlCRUD = new SqlCRUD(GetConnectionString());
+
+            ShipPlacements PlacementsToStore = new ShipPlacements();
+            List<(int, int)> carrier = human.Ships[0].Placement;
+            List<(int, int)> battleship = human.Ships[1].Placement;
+            List<(int, int)> cruiser = human.Ships[2].Placement;
+            List<(int, int)> submarine = human.Ships[3].Placement;
+            List<(int, int)> destroyer = human.Ships[4].Placement;
+
+            PlacementsToStore.Carrier1 = carrier[0].Item1.ToString() + carrier[0].Item2.ToString();
+            PlacementsToStore.Carrier2 = carrier[1].Item1.ToString() + carrier[1].Item2.ToString();
+            PlacementsToStore.Carrier3 = carrier[2].Item1.ToString() + carrier[2].Item2.ToString();
+            PlacementsToStore.Carrier4 = carrier[3].Item1.ToString() + carrier[3].Item2.ToString();
+            PlacementsToStore.Carrier5 = carrier[4].Item1.ToString() + carrier[4].Item2.ToString();
+
+            PlacementsToStore.Battleship1 = battleship[0].Item1.ToString() + battleship[0].Item2.ToString();
+            PlacementsToStore.Battleship2 = battleship[1].Item1.ToString() + battleship[1].Item2.ToString();
+            PlacementsToStore.Battleship3 = battleship[2].Item1.ToString() + battleship[2].Item2.ToString();
+            PlacementsToStore.Battleship4 = battleship[3].Item1.ToString() + battleship[3].Item2.ToString();
+
+            PlacementsToStore.Cruiser1 = cruiser[0].Item1.ToString() + cruiser[0].Item2.ToString();
+            PlacementsToStore.Cruiser2 = cruiser[1].Item1.ToString() + cruiser[1].Item2.ToString();
+            PlacementsToStore.Cruiser3 = cruiser[2].Item1.ToString() + cruiser[2].Item2.ToString();
+
+            PlacementsToStore.Submarine1 = submarine[0].Item1.ToString() + submarine[0].Item2.ToString();
+            PlacementsToStore.Submarine2 = submarine[1].Item1.ToString() + submarine[1].Item2.ToString();
+            PlacementsToStore.Submarine3 = submarine[2].Item1.ToString() + submarine[2].Item2.ToString();
+
+            PlacementsToStore.Destroyer1 = destroyer[0].Item1.ToString() + destroyer[0].Item2.ToString();
+            PlacementsToStore.Destroyer2 = destroyer[1].Item1.ToString() + destroyer[1].Item2.ToString();
+
+            Trace.WriteLine("Saved to db:");
+
+            Trace.WriteLine(PlacementsToStore.Carrier1);
+            Trace.WriteLine(PlacementsToStore.Carrier2);
+            Trace.WriteLine(PlacementsToStore.Carrier3);
+            Trace.WriteLine(PlacementsToStore.Carrier4);
+            Trace.WriteLine(PlacementsToStore.Carrier5);
+                            
+            Trace.WriteLine(PlacementsToStore.Battleship1);
+            Trace.WriteLine(PlacementsToStore.Battleship2);
+            Trace.WriteLine(PlacementsToStore.Battleship3);
+            Trace.WriteLine(PlacementsToStore.Battleship4);
+                           
+            Trace.WriteLine(PlacementsToStore.Cruiser1);
+            Trace.WriteLine(PlacementsToStore.Cruiser2);
+            Trace.WriteLine(PlacementsToStore.Cruiser3);
+                           
+            Trace.WriteLine(PlacementsToStore.Submarine1);
+            Trace.WriteLine(PlacementsToStore.Submarine2);
+            Trace.WriteLine(PlacementsToStore.Submarine3);
+                           
+            Trace.WriteLine(PlacementsToStore.Destroyer1);
+            Trace.WriteLine(PlacementsToStore.Destroyer2);
+
+            sqlCRUD.CreateShipPlacement(PlacementsToStore);
+        }
+
+        
 
         private void DrawGrid()
         {
@@ -283,6 +348,11 @@ namespace BattleshipWPF
                 Trace.WriteLine("Outside grid.");
             }
             return shipWithinGrid;
+        }
+
+        private static string GetConnectionString(string connectionStringName = "Default")
+        {
+            return "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SQLshotsDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         }
 
     }

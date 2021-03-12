@@ -48,6 +48,7 @@ namespace BattleshipWPF
         public (int, int) ComputerShot { get; set; }
         public string RememberButtonContent { get; set; } = " ";
         public SolidColorBrush RememberButtonColor { get; set; } = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+        public SqlCRUD sql { get; set; } = new SqlCRUD(GetConnectionString());
         public GameWindow(PlayerModel hum, PlayerModel com, bool humanStarts, bool aIon)
         {
             Human = hum;
@@ -57,11 +58,6 @@ namespace BattleshipWPF
             InitializeComponent();
             DrawGrid();
             StartVideos();
-
-            SqlCRUD sql = new SqlCRUD(GetConnectionString());
-            ReadFromDatabase(sql);
-
-
 
             if (HumansTurn == false)
             {
@@ -76,6 +72,7 @@ namespace BattleshipWPF
 
             foreach (var row in rows)
             {
+                Trace.WriteLine("Read from db:");
                 Trace.WriteLine(row.Carrier1);
                 Trace.WriteLine(row.Carrier2);
                 Trace.WriteLine(row.Carrier3);
@@ -449,19 +446,32 @@ namespace BattleshipWPF
 
         private void GenerateListOfShots()
         {
-            ListOfShots = new List<(int, int)>();
-            Trace.WriteLine("AI is " + IsAIon);
-            for (int y = 0; y < 10; y++)
+            if (IsAIon == false)
             {
-                for (int x = 0; x < 10; x++)
+                ListOfShots = new List<(int, int)>();
+                Trace.WriteLine("AI is " + IsAIon);
+                for (int y = 0; y < 10; y++)
                 {
-                    ListOfShots.Add((x, y));
+                    for (int x = 0; x < 10; x++)
+                    {
+                        ListOfShots.Add((x, y));
+                    }
                 }
-            }
 
-            ListOfShots.PrintListOfShots();
-            ListOfShots = ListOfShots.OrderBy(x => Guid.NewGuid()).ToList();
-            ListOfShots.PrintListOfShots();
+                ListOfShots = ListOfShots.OrderBy(x => Guid.NewGuid()).ToList();
+                ListOfShots.PrintListOfShots();
+                return;
+            }
+            else
+            {
+                UseAItoGenerateListOfShots();
+            }
+        }
+
+        private void UseAItoGenerateListOfShots()
+        {
+            var rows = sql.GetAllData();
+
         }
 
         private void ShowHumanFireVideo()
