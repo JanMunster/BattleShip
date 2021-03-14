@@ -446,20 +446,22 @@ namespace BattleshipWPF
 
         private void GenerateListOfShots()
         {
+
+            ListOfShots = new List<(int, int)>();
+            Trace.WriteLine("AI is " + IsAIon);
+            for (int y = 0; y < 10; y++)
+            {
+                for (int x = 0; x < 10; x++)
+                {
+                    ListOfShots.Add((x, y));
+                }
+            }
+
+            ListOfShots = ListOfShots.OrderBy(x => Guid.NewGuid()).ToList();
+            ListOfShots.PrintListOfShots();
+
             if (IsAIon == false)
             {
-                ListOfShots = new List<(int, int)>();
-                Trace.WriteLine("AI is " + IsAIon);
-                for (int y = 0; y < 10; y++)
-                {
-                    for (int x = 0; x < 10; x++)
-                    {
-                        ListOfShots.Add((x, y));
-                    }
-                }
-
-                ListOfShots = ListOfShots.OrderBy(x => Guid.NewGuid()).ToList();
-                ListOfShots.PrintListOfShots();
                 return;
             }
             else
@@ -471,7 +473,7 @@ namespace BattleshipWPF
         private void UseAItoGenerateListOfShots()
         {
             List<ShipPlacements> allPlacements = sql.GetAllData();
-            AI aI = new AI(allPlacements);
+            AI aI = new AI(allPlacements,ListOfShots);
             ListOfShots = aI.GenerateAIListOfShots();
         }
 

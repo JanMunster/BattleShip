@@ -109,6 +109,25 @@ namespace BattleShipLibrary.ExtensionMethods
                 Trace.Write(" " + listOfShots[i]);
             }
         }
+
+        public static void PrintCountPlacements(this int[,] tuplesCounted)
+        {
+            Trace.WriteLine("Raw count placements: ");
+            int x = 0;
+            int y = 0;
+
+            for (int i = 0; i < 100; i++)
+            {
+                Trace.Write(" " + tuplesCounted[x, y]);
+                x++;
+                if (x == 10)
+                {
+                    Trace.WriteLine("");
+                    x = 0;
+                    y++;
+                }
+            }
+        }
     }
 }
 
