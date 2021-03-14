@@ -470,8 +470,9 @@ namespace BattleshipWPF
 
         private void UseAItoGenerateListOfShots()
         {
-            var rows = sql.GetAllData();
-
+            List<ShipPlacements> allPlacements = sql.GetAllData();
+            AI aI = new AI(allPlacements);
+            ListOfShots = aI.GenerateAIListOfShots();
         }
 
         private void ShowHumanFireVideo()
@@ -548,6 +549,7 @@ namespace BattleshipWPF
                 endScreen.wonOrLostText.Text = "YOU WON!";
                 endScreen.numberOfShotsText.Text = "You used " + totalShots +
                     " shots to destroy the opponent.";
+                endScreen.victorySound.Play();
             }
             else
             {
@@ -556,6 +558,7 @@ namespace BattleshipWPF
                 endScreen.wonOrLostText.Text = "YOU LOST!";
                 endScreen.numberOfShotsText.Text = "The opponent took " + totalShots +
                     " shots to sink your ships.";
+                endScreen.defeatSound.Play();
             }
 
             this.Close();

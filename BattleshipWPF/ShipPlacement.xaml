@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BattleshipWPF"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Ship Placement" Height="800" Width="1100">
-    <Grid>
+    <Grid  Background="PowderBlue">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>

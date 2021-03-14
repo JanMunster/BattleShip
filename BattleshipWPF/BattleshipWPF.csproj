@@ -8,11 +8,13 @@
 
   <ItemGroup>
     <None Remove="Images\computerfiringtrim.mp4" />
+    <None Remove="Images\defeatmusic .mp3" />
     <None Remove="Images\humanfiringtrim.mp4" />
     <None Remove="Images\loserImage.jfif" />
     <None Remove="Images\navyfootage.mp4" />
     <None Remove="Images\navyfootage2.mp4" />
     <None Remove="Images\navyWelcome.jpg" />
+    <None Remove="Images\victoryfanfare.wav" />
     <None Remove="Images\winnerImage.jfif" />
   </ItemGroup>
 
@@ -21,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\defeatmusic .mp3" />
     <Resource Include="Images\loserImage.jfif" />
     <Resource Include="Images\navyfootage.mp4" />
   </ItemGroup>
@@ -35,6 +38,7 @@
     <Resource Include="Images\humanfiringtrim.mp4" />
     <Resource Include="Images\navyfootage2.mp4" />
     <Resource Include="Images\navyWelcome.jpg" />
+    <Resource Include="Images\victoryfanfare.wav" />
     <Resource Include="Images\winnerImage.jfif" />
   </ItemGroup>
 

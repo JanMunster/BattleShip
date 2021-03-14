@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BattleshipWPF"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Game Over" Height="850" Width="1150">
-    <Grid>
+    <Grid  Background="PowderBlue">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -52,5 +52,15 @@
         <Button Grid.Row="3" Grid.Column="2" Content="EXIT"
                 Height="100" Width="300" FontSize="42" Name="exitButton" Click="exitButton_Click">
         </Button>
+
+        <MediaElement Grid.Row="0" Grid.Column="0" Visibility="Hidden" Name="victorySound"
+                      LoadedBehavior="Manual"
+                      Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\victoryfanfare.wav">            
+        </MediaElement>
+
+        <MediaElement Grid.Row="0" Grid.Column="0" Visibility="Hidden" Name="defeatSound"
+                      LoadedBehavior="Manual"
+                      Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\defeatmusic .mp3">                       
+        </MediaElement>
     </Grid>
 </Window>
