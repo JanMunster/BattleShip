@@ -10,6 +10,7 @@
     <None Remove="Images\computerfiringtrim.mp4" />
     <None Remove="Images\defeatmusic .mp3" />
     <None Remove="Images\humanfiringtrim.mp4" />
+    <None Remove="Images\introMusic.mp3" />
     <None Remove="Images\loserImage.jfif" />
     <None Remove="Images\navyfootage.mp4" />
     <None Remove="Images\navyfootage2.mp4" />
@@ -24,6 +25,7 @@
 
   <ItemGroup>
     <Resource Include="Images\defeatmusic .mp3" />
+    <Resource Include="Images\introMusic.mp3" />
     <Resource Include="Images\loserImage.jfif" />
     <Resource Include="Images\navyfootage.mp4" />
   </ItemGroup>

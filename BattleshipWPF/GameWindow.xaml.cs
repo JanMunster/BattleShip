@@ -57,7 +57,7 @@ namespace BattleshipWPF
             IsAIon = aIon;
             InitializeComponent();
             DrawGrid();
-            StartVideos();
+            StartVideos();            
 
             if (HumansTurn == false)
             {
@@ -500,6 +500,7 @@ namespace BattleshipWPF
                 if (ship.IsAlive == true)
                 {
                     humanWon = false;
+                    break;
                 }
             }
 
@@ -519,6 +520,7 @@ namespace BattleshipWPF
                 if (ship.IsAlive == true)
                 {
                     computerWon = false;
+                    break;
                 }
             }
 
@@ -584,7 +586,7 @@ namespace BattleshipWPF
             popUp.HumanShips = Human.ShipSectionHere;
 
             if (popUp.IsVisible == false)
-            {
+            {                
                 popUp.Show();
             }
             else

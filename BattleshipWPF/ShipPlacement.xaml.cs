@@ -187,9 +187,7 @@ namespace BattleshipWPF
             Trace.WriteLine(PlacementsToStore.Destroyer2);
 
             sqlCRUD.CreateShipPlacement(PlacementsToStore);
-        }
-
-        
+        }        
 
         private void DrawGrid()
         {
@@ -223,6 +221,7 @@ namespace BattleshipWPF
                 }
             }
         }
+
         private void UpdateGrid()
         {
             int x = 0;
@@ -258,6 +257,7 @@ namespace BattleshipWPF
                 }
             }
         }
+
         private void moveShip(List<(int, int)> newShip, List<(int, int)> oldShip)
         {
             foreach ((int, int) oldSection in oldShip)
@@ -273,6 +273,7 @@ namespace BattleshipWPF
             }
             UpdateGrid();
         }
+
         private bool CheckOverlap(List<(int, int)> newShip)
         {
             bool overlap = false;
@@ -294,6 +295,7 @@ namespace BattleshipWPF
 
             return overlap;
         }
+
         private void CalculateNewShip(List<(int, int)> newShip, (int, int) buttonPos)
         {
             int shipSize = human.Ships[shipSelected].ShipSize;
@@ -319,6 +321,7 @@ namespace BattleshipWPF
                 }
             }
         }
+
         private bool CheckFitInGrid((int, int) pos)
         {
             ShipModel ship = human.Ships[shipSelected];

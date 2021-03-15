@@ -101,8 +101,8 @@ namespace BattleshipWPF
         private void ExtractTuplesFromOneShip(String ship)
         {
             (int, int) tempTuple = (0, 0);
-            tempTuple.Item1 = Convert.ToInt32(ship[0]);
-            tempTuple.Item2 = Convert.ToInt32(ship[1]);
+            tempTuple.Item1 = Convert.ToInt32(ship.Substring(0,1));
+            tempTuple.Item2 = Convert.ToInt32(ship.Substring(1,1));
             Trace.WriteLine("ExtractTuplesFromOneShip: " + tempTuple);
             CountPlacements[tempTuple.Item1, tempTuple.Item2]++;
             

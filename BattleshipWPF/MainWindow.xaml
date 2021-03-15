@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleshipWPF"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="BattleShip" Height="800" Width="800" FontSize="24">
+        Title="Welcome to BattleShip" Height="800" Width="800" FontSize="24">
     <Grid Background="PowderBlue">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -85,6 +85,10 @@
                 Click="StartButton_Click">
             START
         </Button>
+
+        <MediaElement Visibility="Hidden" 
+                      Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\introMusic.mp3">
+        </MediaElement>
 
 
     </Grid>
