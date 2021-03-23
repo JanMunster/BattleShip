@@ -36,8 +36,7 @@
                 MouseEnter="but_MouseEnter" MouseLeave="but_MouseLeave">
             <TextBlock TextAlignment="Center" FontSize="20">
                 Hover here to<LineBreak/>display opponents<LineBreak/>shots fired
-            </TextBlock>
-            
+            </TextBlock>            
         </Button>
 
         <TextBlock Grid.Row="0" Grid.Column="3" FontSize="24" Grid.ColumnSpan="2" 

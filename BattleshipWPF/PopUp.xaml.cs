@@ -52,14 +52,12 @@ namespace BattleshipWPF
                     button.HorizontalAlignment = HorizontalAlignment.Stretch;
                     button.Tag = (x, y);
                     button.FontSize = 32;
-                    button.Content = "";
+                    button.Content = "";                    
                     Grid.SetColumn(button, x);
                     Grid.SetRow(button, y);
                     shotGrid.Children.Add(button);
                 }
             }
-
-
         }
 
         private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

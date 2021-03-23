@@ -200,7 +200,7 @@ namespace BattleShipLibrary.GameInit
                 shipSectionHere[section.Item1, section.Item2] = true;
             }
         }
-        private bool[,] PopulateShotsFired()
+        public bool[,] PopulateShotsFired()
         {
             bool[,] grid = new bool[10, 10];
             for (int i = 0; i < 10; i++)

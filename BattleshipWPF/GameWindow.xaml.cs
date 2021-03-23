@@ -151,6 +151,7 @@ namespace BattleshipWPF
             ShowHumanFireVideo();
 
             Trace.WriteLine("Human Shot fired at: " + ButtonPos);
+            Human.PrintShotsFired();
         }
 
         private void CheckShipAlive(ShipModel ship)
