@@ -54,12 +54,12 @@
         </Button>
 
         <MediaElement Grid.Row="0" Grid.Column="0" Visibility="Hidden" Name="victorySound"
-                      LoadedBehavior="Manual"
+                      LoadedBehavior="Manual" Volume=".02"
                       Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\victoryfanfare.wav">            
         </MediaElement>
 
         <MediaElement Grid.Row="0" Grid.Column="0" Visibility="Hidden" Name="defeatSound"
-                      LoadedBehavior="Manual"
+                      LoadedBehavior="Manual" Volume=".02"
                       Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\defeatmusic .mp3">                       
         </MediaElement>
     </Grid>

@@ -100,7 +100,9 @@ namespace BattleshipWPF
         private void StartVideos()
         {
             navyfootage.Play();
+            navyfootage.Volume = 0.02;
             navyfootage2.Play();
+            navyfootage2.Volume = 0.02;
         }
 
         private void DrawGrid()
@@ -483,6 +485,7 @@ namespace BattleshipWPF
             navyfootage.Visibility = Visibility.Hidden;
             humanfiringvideo.Visibility = Visibility.Visible;
             humanfiringvideo.Play();
+            humanfiringvideo.Volume = 0.1;
         }
 
         private void ShowComputerFireVideo()
@@ -490,6 +493,7 @@ namespace BattleshipWPF
             navyfootage2.Visibility = Visibility.Hidden;
             computerfiringvideo.Visibility = Visibility.Visible;
             computerfiringvideo.Play();
+            computerfiringvideo.Volume = 0.1;
         }
 
         private void CheckForHumanWinner()
@@ -555,6 +559,7 @@ namespace BattleshipWPF
                 endScreen.numberOfShotsText.Text = "You used " + totalShots +
                     " shots to destroy the opponent.";
                 endScreen.victorySound.Play();
+                endScreen.victorySound.Volume = 0.02;
             }
             else
             {
@@ -564,6 +569,7 @@ namespace BattleshipWPF
                 endScreen.numberOfShotsText.Text = "The opponent took " + totalShots +
                     " shots to sink your ships.";
                 endScreen.defeatSound.Play();
+                endScreen.defeatSound.Volume = 0.02;
             }
 
             this.Close();
@@ -573,12 +579,14 @@ namespace BattleshipWPF
         {
             navyfootage2.Position = TimeSpan.FromMilliseconds(1);
             navyfootage2.Play();
+            navyfootage2.Volume = 0.02;
         }
 
         private void navyfootage_MediaEnded(object sender, RoutedEventArgs e)
         {
             navyfootage.Position = TimeSpan.FromMilliseconds(1);
             navyfootage.Play();
+            navyfootage.Volume = 0.02;
         }
 
         private void but_MouseEnter(object sender, MouseEventArgs e)

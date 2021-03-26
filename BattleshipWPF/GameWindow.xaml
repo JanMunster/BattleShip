@@ -110,14 +110,14 @@
                       Grid.Row="6" Grid.Column="1" LoadedBehavior="Manual"   SpeedRatio="1.5"
                RenderOptions.BitmapScalingMode="Fant" Visibility="Hidden"
                Stretch="Fill" MediaEnded="Humanfire_MediaEnded"
-               Width="200"
+               Width="200" Volume=".1"
                />
         <MediaElement Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\computerfiringtrim.mp4"
                       Name="computerfiringvideo"
                       Grid.Row="6" Grid.Column="6" LoadedBehavior="Manual"  SpeedRatio="1.5"
                RenderOptions.BitmapScalingMode="Fant" Visibility="Hidden"
                Stretch="Fill" MediaEnded="Computerfiringvideo_MediaEnded"
-               Width="200"
+               Width="200" Volume=".1"
                />
         
         <MediaElement Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\navyfootage.mp4" 
@@ -125,14 +125,14 @@
                       Grid.Row="6" Grid.Column="6" LoadedBehavior="Manual"
                RenderOptions.BitmapScalingMode="Fant" MediaEnded="navyfootage2_MediaEnded"
                Stretch="Fill"
-               Width="200" 
+               Width="200" Volume=".02"
                />
         <MediaElement Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\navyfootage2.mp4" 
                       Name="navyfootage"
-                      Grid.Row="6" Grid.Column="1" Volume="0" LoadedBehavior="Manual"
+                      Grid.Row="6" Grid.Column="1" LoadedBehavior="Manual"
                RenderOptions.BitmapScalingMode="Fant" MediaEnded="navyfootage_MediaEnded"
                Stretch="Fill"
-               Width="200"
+               Width="200" Volume="0"
                />
 
         <TextBlock Grid.Row="8" Grid.Column="1" FontSize="48" HorizontalAlignment="Center" 

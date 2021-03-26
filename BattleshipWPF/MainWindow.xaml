@@ -87,7 +87,9 @@
         </Button>
 
         <MediaElement Visibility="Hidden" 
-                      Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\introMusic.mp3">
+                      Source="C:\Users\janmu\OneDrive\Documents\C#Projects\BattleShip\BattleshipWPF\Images\introMusic.mp3"
+                      Volume=".02">
+               
         </MediaElement>
 
 
